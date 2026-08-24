@@ -1,0 +1,351 @@
+{
+  "type": "FeatureCollection",
+  "name": "musina_infrastructure_points_app_v1",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.019353,
+          -22.335708
+        ]
+      },
+      "properties": {
+        "infra_id": "SCH_001",
+        "name": "Beitbridge Primary School",
+        "type": "school",
+        "subtype": "school",
+        "address": "N1, Phase 3, Matswale Village, Musina, 0900",
+        "source_name": "Limpopo Department of Education EMIS Limpopo Schools.xlsx",
+        "source_url_or_reference": "https://www.edu.limpopo.gov.za/programmes/EMIS.php",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Filtered from official Limpopo school masterlist by proximity to Musina survey block/ward geography. Coordinates were normalised from the source numeric coordinate fields."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.03277244,
+          -22.33066731
+        ]
+      },
+      "properties": {
+        "infra_id": "SCH_002",
+        "name": "Bonwa Udi Primary School",
+        "type": "school",
+        "subtype": "school",
+        "address": "Phillemon Sekhari St, Stand 802, Musina, 0900",
+        "source_name": "Limpopo Department of Education EMIS Limpopo Schools.xlsx",
+        "source_url_or_reference": "https://www.edu.limpopo.gov.za/programmes/EMIS.php",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Filtered from official Limpopo school masterlist by proximity to Musina survey block/ward geography. Coordinates were normalised from the source numeric coordinate fields."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.046759,
+          -22.357731
+        ]
+      },
+      "properties": {
+        "infra_id": "SCH_003",
+        "name": "Hoerskool Eric Louw Secondary School",
+        "type": "school",
+        "subtype": "school",
+        "address": "R508, Musina, 1390",
+        "source_name": "Limpopo Department of Education EMIS Limpopo Schools.xlsx",
+        "source_url_or_reference": "https://www.edu.limpopo.gov.za/programmes/EMIS.php",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Filtered from official Limpopo school masterlist by proximity to Musina survey block/ward geography. Coordinates were normalised from the source numeric coordinate fields."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.835815,
+          -22.294268
+        ]
+      },
+      "properties": {
+        "infra_id": "SCH_004",
+        "name": "Kranenburg Primary School",
+        "type": "school",
+        "subtype": "school",
+        "address": "R572, Kranenburg Farm, Musina, 0360",
+        "source_name": "Limpopo Department of Education EMIS Limpopo Schools.xlsx",
+        "source_url_or_reference": "https://www.edu.limpopo.gov.za/programmes/EMIS.php",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Filtered from official Limpopo school masterlist by proximity to Musina survey block/ward geography. Coordinates were normalised from the source numeric coordinate fields."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.029788,
+          -22.331178
+        ]
+      },
+      "properties": {
+        "infra_id": "SCH_005",
+        "name": "Makushu Primary School",
+        "type": "school",
+        "subtype": "school",
+        "address": "Daniel Mavangwa St, Musina, 0973",
+        "source_name": "Limpopo Department of Education EMIS Limpopo Schools.xlsx",
+        "source_url_or_reference": "https://www.edu.limpopo.gov.za/programmes/EMIS.php",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Filtered from official Limpopo school masterlist by proximity to Musina survey block/ward geography. Coordinates were normalised from the source numeric coordinate fields."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.87192406,
+          -22.1949323
+        ]
+      },
+      "properties": {
+        "infra_id": "SCH_006",
+        "name": "Maroi Combined School",
+        "type": "school",
+        "subtype": "school",
+        "address": "Main Rd, Maroi Farm, Musina, 1129",
+        "source_name": "Limpopo Department of Education EMIS Limpopo Schools.xlsx",
+        "source_url_or_reference": "https://www.edu.limpopo.gov.za/programmes/EMIS.php",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Filtered from official Limpopo school masterlist by proximity to Musina survey block/ward geography. Coordinates were normalised from the source numeric coordinate fields."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.006384,
+          -22.354719
+        ]
+      },
+      "properties": {
+        "infra_id": "SCH_007",
+        "name": "Martin De Porrez Primary School",
+        "type": "school",
+        "subtype": "school",
+        "address": "N1, Harper Ext 6, Musina, 0815",
+        "source_name": "Limpopo Department of Education EMIS Limpopo Schools.xlsx",
+        "source_url_or_reference": "https://www.edu.limpopo.gov.za/programmes/EMIS.php",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Filtered from official Limpopo school masterlist by proximity to Musina survey block/ward geography. Coordinates were normalised from the source numeric coordinate fields."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.034636,
+          -22.334844
+        ]
+      },
+      "properties": {
+        "infra_id": "SCH_008",
+        "name": "Rixile Primary School",
+        "type": "school",
+        "subtype": "school",
+        "address": "Johannes Nemaangani St, Musina, 0900",
+        "source_name": "Limpopo Department of Education EMIS Limpopo Schools.xlsx",
+        "source_url_or_reference": "https://www.edu.limpopo.gov.za/programmes/EMIS.php",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Filtered from official Limpopo school masterlist by proximity to Musina survey block/ward geography. Coordinates were normalised from the source numeric coordinate fields."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.04396,
+          -22.34331
+        ]
+      },
+      "properties": {
+        "infra_id": "POL_001",
+        "name": "Musina Police Station",
+        "type": "police",
+        "subtype": "police_station",
+        "address": "8A Geldenhys Street, Musina, 0900",
+        "source_name": "South African Police Service station details",
+        "source_url_or_reference": "https://www.saps.gov.za/contacts/stationdetails.php?sid=784",
+        "source_confidence": "A",
+        "verification_status": "official_source_not_field_verified",
+        "include_in_app": "yes",
+        "notes": "Official SAPS contact page provides latitude and longitude."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.0450278,
+          -22.3435556
+        ]
+      },
+      "properties": {
+        "infra_id": "HLT_001",
+        "name": "Musina Clinic",
+        "type": "health",
+        "subtype": "clinic",
+        "address": "Musina / Nancefield area",
+        "source_name": "Limpopo Department of Health HOSPITAL & PHC FACILITIES Vhembe District PDF extract",
+        "source_url_or_reference": "https://www.ldoh.gov.za/ldoh-admin/documents/latestnews/documents/HEDP008%20PANEL%20VOL%20A.2%20to%20VOL%20O09122020.pdf",
+        "source_confidence": "A",
+        "verification_status": "official_source_needs_date_check",
+        "include_in_app": "yes",
+        "notes": "Official PDF extract lists facility with map reference D3, DMS coordinate, longitude, and latitude. Document extract appears older; field team should confirm current operational status."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.0428611,
+          -22.3416944
+        ]
+      },
+      "properties": {
+        "infra_id": "HLT_002",
+        "name": "Musina Hospital",
+        "type": "health",
+        "subtype": "hospital",
+        "address": "Musina / Nancefield area",
+        "source_name": "Limpopo Department of Health HOSPITAL & PHC FACILITIES Vhembe District PDF extract",
+        "source_url_or_reference": "https://www.ldoh.gov.za/ldoh-admin/documents/latestnews/documents/HEDP008%20PANEL%20VOL%20A.2%20to%20VOL%20O09122020.pdf",
+        "source_confidence": "A",
+        "verification_status": "official_source_needs_date_check",
+        "include_in_app": "yes",
+        "notes": "Official PDF extract lists facility with map reference D3, DMS coordinate, longitude, and latitude. Document extract appears older; field team should confirm current operational status."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.0386667,
+          -22.3460278
+        ]
+      },
+      "properties": {
+        "infra_id": "HLT_003",
+        "name": "Nancefield Dental Clinic",
+        "type": "health",
+        "subtype": "dental_clinic",
+        "address": "Musina / Nancefield area",
+        "source_name": "Limpopo Department of Health HOSPITAL & PHC FACILITIES Vhembe District PDF extract",
+        "source_url_or_reference": "https://www.ldoh.gov.za/ldoh-admin/documents/latestnews/documents/HEDP008%20PANEL%20VOL%20A.2%20to%20VOL%20O09122020.pdf",
+        "source_confidence": "A",
+        "verification_status": "official_source_needs_date_check",
+        "include_in_app": "yes",
+        "notes": "Official PDF extract lists facility with map reference D3, DMS coordinate, longitude, and latitude. Document extract appears older; field team should confirm current operational status."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.04071,
+          -22.34319
+        ]
+      },
+      "properties": {
+        "infra_id": "TRN_001",
+        "name": "Musina Railway Station",
+        "type": "transport_node",
+        "subtype": "railway_station",
+        "address": "Musina / Beitbridge corridor",
+        "source_name": "Mapcarta / OpenStreetMap-derived railway station page",
+        "source_url_or_reference": "https://mapcarta.com/N247646919",
+        "source_confidence": "C",
+        "verification_status": "contextual_open_source_needs_team_verification",
+        "include_in_app": "yes",
+        "notes": "OSM-derived contextual point; verify locally before strong claims."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.98535,
+          -22.21659
+        ]
+      },
+      "properties": {
+        "infra_id": "BRD_001",
+        "name": "Beit Bridge Border Control",
+        "type": "border_crossing",
+        "subtype": "border_checkpoint",
+        "address": "Musina / Beitbridge corridor",
+        "source_name": "Mapcarta / OpenStreetMap-derived border checkpoint page",
+        "source_url_or_reference": "https://mapcarta.com/N11295523460",
+        "source_confidence": "C",
+        "verification_status": "contextual_open_source_needs_team_verification",
+        "include_in_app": "yes",
+        "notes": "Important regional anchor; coordinates are contextual, not an official BMA/DHA GIS point."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.98615,
+          -22.22538
+        ]
+      },
+      "properties": {
+        "infra_id": "BRD_002",
+        "name": "Beit Bridge",
+        "type": "transport_node",
+        "subtype": "bridge",
+        "address": "Musina / Beitbridge corridor",
+        "source_name": "Mapcarta / GeoNames-derived bridge page",
+        "source_url_or_reference": "https://mapcarta.com/14386466",
+        "source_confidence": "C",
+        "verification_status": "contextual_open_source_needs_team_verification",
+        "include_in_app": "yes",
+        "notes": "Bridge anchor included for regional orientation; not used as a respondent location."
+      }
+    }
+  ]
+}
