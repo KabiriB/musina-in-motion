@@ -1,0 +1,93 @@
+[
+  {
+    "source_type":"birthplace_country",
+    "country_display":"Zimbabwe",
+    "n":475,
+    "pct":75.5,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"birthplace_country",
+    "country_display":"South Africa",
+    "n":109,
+    "pct":17.3,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"birthplace_country",
+    "country_display":"Democratic Republic of Congo",
+    "n":13,
+    "pct":2.1,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"birthplace_country",
+    "country_display":"Malawi",
+    "n":10,
+    "pct":1.6,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"birthplace_country",
+    "country_display":"Ethiopia",
+    "n":10,
+    "pct":1.6,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"birthplace_country",
+    "country_display":"Other \/ small-count countries",
+    "n":7,
+    "pct":1.1,
+    "display_rule":"aggregated_named_countries_with_n_under_5"
+  },
+  {
+    "source_type":"birthplace_country",
+    "country_display":"Burundi",
+    "n":5,
+    "pct":0.8,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"recent_origin_country",
+    "country_display":"Zimbabwe",
+    "n":451,
+    "pct":71.7,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"recent_origin_country",
+    "country_display":"South Africa",
+    "n":150,
+    "pct":23.8,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"recent_origin_country",
+    "country_display":"Malawi",
+    "n":9,
+    "pct":1.4,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"recent_origin_country",
+    "country_display":"Other \/ small-count countries",
+    "n":9,
+    "pct":1.4,
+    "display_rule":"aggregated_named_countries_with_n_under_5"
+  },
+  {
+    "source_type":"recent_origin_country",
+    "country_display":"Democratic Republic of Congo",
+    "n":7,
+    "pct":1.1,
+    "display_rule":"shown_n_5_or_more"
+  },
+  {
+    "source_type":"recent_origin_country",
+    "country_display":"Missing \/ unknown",
+    "n":3,
+    "pct":0.5,
+    "display_rule":"missing_count"
+  }
+]

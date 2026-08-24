@@ -1,0 +1,50 @@
+{
+  "project": "Musina in Motion",
+  "data_spine_version": "v1-QA-patched-ward-layer",
+  "created_at": "2026-05-14T16:18:56",
+  "source_files": {
+    "survey": "Gemms_cleanedv2_May2026.xlsx",
+    "block_coordinates": "Coordinates_Corrected_11May2026.xlsx",
+    "ward_boundaries": "musina_wards_1_6_official_app_ready_v3_QA_PATCHED.geojson",
+    "geography_audit_bundle": "musina_rebuild_handover_v2"
+  },
+  "base_sample_rule": "Rows where interview_information_complete=2, eligibility_screening_complete=2, and es_eligible=1.",
+  "raw_rows_in_cleaned_file": 630,
+  "base_analyzable_n": 629,
+  "excluded_record_ids": [
+    "south_africa_00620"
+  ],
+  "block_anchor_n": 16,
+  "ward_n": 6,
+  "privacy_rules": {
+    "block_n_under_5": "Do not show composition; location and count band only.",
+    "block_n_5_to_9": "Do not show composition; location and count band only.",
+    "block_n_10_to_19": "Show broad non-sensitive summaries only; avoid sensitive indicators and detailed cross-tabs.",
+    "block_n_20_plus": "Broad non-sensitive summaries allowed; sensitive indicators still require caution and usually ward-level display.",
+    "small_cell_rule": "Named categories with cell count below 5 are blank/suppressed in app-safe block outputs.",
+    "sensitive_indicators": "Documentation, violence, GBV, mental health, specific health conditions, and qualitative linkage fields should not be mapped at block level."
+  },
+  "geography_rules": {
+    "ward_boundaries": "Use official municipal ward boundaries.",
+    "block_points": "Use corrected fieldwork block coordinate anchors; these are not household locations.",
+    "ward3_mismatch_decision": "Ward3-TS-01 and Ward3-TS-02 remain assigned to Ward 3 for display/analysis per team lead; GIS joined ward retained as internal QA flag."
+  },
+  "recommended_app_files": [
+    "musina_wards_1_6_official_app_ready_v3_QA_PATCHED.geojson",
+    "musina_blocks_with_summary_app_SAFE_v1.geojson",
+    "musina_block_summary_app_SAFE_v1.json",
+    "musina_ward_summary_app_v1.json",
+    "musina_country_summary_app_SAFE_v1.json"
+  ],
+  "palette": {
+    "teal_green": "#258a72",
+    "rose": "#db537b",
+    "gold": "#ffc151",
+    "charcoal": "#3c3c3c",
+    "coral_red": "#e54752",
+    "ochre": "#b87022",
+    "soft_coral": "#ee7367",
+    "deep_green": "#3d6e54"
+  },
+  "qa_patch_note": "Ward GeoJSON updated after raw-data QA. Interface now uses musina_wards_1_6_official_app_ready_v3_QA_PATCHED.geojson instead of the stale v2 ward layer."
+}

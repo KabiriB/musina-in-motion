@@ -1,0 +1,168 @@
+{
+  "type": "FeatureCollection",
+  "name": "musina_petrol_station_candidates_TEMPORARY_v1",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.0434,
+          -22.3318
+        ]
+      },
+      "properties": {
+        "infra_id": "PET_CAND_001",
+        "name": "Baobab Tank and Tummy / Baobab Petroleum",
+        "type": "petrol_station",
+        "subtype": "candidate_petrol_station",
+        "address": "4 Roux Street, Musina, 0900",
+        "source_name": "Musina Local Municipality merchant list + Cylex Baobab Petroleum listing",
+        "source_url_or_reference": "https://www.musina.gov.za/buy-electricity/ ; https://www.cylex.net.za/company/baobab-petroleum-23716881.html",
+        "source_confidence": "D",
+        "verification_status": "temporary_candidate_needs_team_verification",
+        "include_in_app": "candidate_only",
+        "coordinate_status": "approximate_from_address_map_review",
+        "mobility_role": "possible petrol and waiting/mobility node; field role unverified",
+        "notes": "Candidate point only. Address/name appears in local web sources, but exact coordinate and mobility role must be confirmed by the team before analytical use.",
+        "candidate_status": "temporary_candidate_not_final",
+        "display_warning": "Candidate point: verify before analytical use"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.0431,
+          -22.3558
+        ]
+      },
+      "properties": {
+        "infra_id": "PET_CAND_002",
+        "name": "Elegant Fuel Service Station",
+        "type": "petrol_station",
+        "subtype": "candidate_petrol_station",
+        "address": "8 National Road / N1 Main Road, Musina, 0900",
+        "source_name": "Cylex Elegant Fuel listing + Musina Local Municipality merchant list",
+        "source_url_or_reference": "https://www.cylex.net.za/company/elegant-fuel-service-station-23736734.html ; https://www.musina.gov.za/buy-electricity/",
+        "source_confidence": "D",
+        "verification_status": "temporary_candidate_needs_team_verification",
+        "include_in_app": "candidate_only",
+        "coordinate_status": "approximate_from_address_map_review",
+        "mobility_role": "possible petrol and transport corridor node; field role unverified",
+        "notes": "Candidate point only. The address is listed online, but the coordinate is approximate and must be checked locally.",
+        "candidate_status": "temporary_candidate_not_final",
+        "display_warning": "Candidate point: verify before analytical use"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.0406,
+          -22.3415
+        ]
+      },
+      "properties": {
+        "infra_id": "PET_CAND_003",
+        "name": "Engen \u2013 Copper Motors",
+        "type": "petrol_station",
+        "subtype": "candidate_petrol_station",
+        "address": "2 Harold Grenfell Street, Musina",
+        "source_name": "Musina Local Municipality merchant list",
+        "source_url_or_reference": "https://www.musina.gov.za/buy-electricity/",
+        "source_confidence": "D",
+        "verification_status": "temporary_candidate_needs_team_verification",
+        "include_in_app": "candidate_only",
+        "coordinate_status": "approximate_from_address_map_review",
+        "mobility_role": "possible petrol/service node; field role unverified",
+        "notes": "Candidate point only. Listed by the municipality as an electricity merchant/fuel-related retail point; exact coordinate and current status need confirmation.",
+        "candidate_status": "temporary_candidate_not_final",
+        "display_warning": "Candidate point: verify before analytical use"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.0436,
+          -22.3594
+        ]
+      },
+      "properties": {
+        "infra_id": "PET_CAND_004",
+        "name": "Shell Shop Musina",
+        "type": "petrol_station",
+        "subtype": "candidate_petrol_station",
+        "address": "N1 Main Road, Musina",
+        "source_name": "Musina Local Municipality merchant list",
+        "source_url_or_reference": "https://www.musina.gov.za/buy-electricity/",
+        "source_confidence": "D",
+        "verification_status": "temporary_candidate_needs_team_verification",
+        "include_in_app": "candidate_only",
+        "coordinate_status": "approximate_from_address_map_review",
+        "mobility_role": "possible petrol and N1 corridor node; field role unverified",
+        "notes": "Candidate point only. Listed by the municipality; exact coordinate/current branding and transport role need team verification.",
+        "candidate_status": "temporary_candidate_not_final",
+        "display_warning": "Candidate point: verify before analytical use"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.0405,
+          -22.389
+        ]
+      },
+      "properties": {
+        "infra_id": "PET_CAND_005",
+        "name": "Sasol Petrol Station",
+        "type": "petrol_station",
+        "subtype": "candidate_petrol_station",
+        "address": "N1, towards Louis Trichardt, Musina",
+        "source_name": "Musina Local Municipality merchant list",
+        "source_url_or_reference": "https://www.musina.gov.za/buy-electricity/",
+        "source_confidence": "D",
+        "verification_status": "temporary_candidate_needs_team_verification",
+        "include_in_app": "candidate_only",
+        "coordinate_status": "approximate_from_address_map_review",
+        "mobility_role": "possible N1 corridor petrol node; field role unverified",
+        "notes": "Candidate point only. The address description is broad, so the point is deliberately approximate and should not be used for distance analysis.",
+        "candidate_status": "temporary_candidate_not_final",
+        "display_warning": "Candidate point: verify before analytical use"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          29.98,
+          -22.303
+        ]
+      },
+      "properties": {
+        "infra_id": "PET_CAND_006",
+        "name": "Comar Fuel Musina Depot",
+        "type": "petrol_station",
+        "subtype": "candidate_fuel_depot",
+        "address": "Farm Vogelengzan, R527 Pontdrift Road, Musina",
+        "source_name": "Comar Fuel website",
+        "source_url_or_reference": "https://www.comarfuel.co.za/",
+        "source_confidence": "D",
+        "verification_status": "temporary_candidate_needs_team_verification",
+        "include_in_app": "candidate_only",
+        "coordinate_status": "approximate_from_address_map_review",
+        "mobility_role": "possible logistics/fuel depot node; field role unverified",
+        "notes": "Candidate depot/fuel infrastructure. The company describes Musina as a strategic on-road refuelling hub, but exact coordinate and relevance to survey/focus group mobility need confirmation.",
+        "candidate_status": "temporary_candidate_not_final",
+        "display_warning": "Candidate point: verify before analytical use"
+      }
+    }
+  ]
+}

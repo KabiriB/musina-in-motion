@@ -1,0 +1,1004 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.03502317637208,
+          -22.336201823423977
+        ]
+      },
+      "properties": {
+        "resource_id": "res_community_hall",
+        "resource_name": "community hall",
+        "resource_category": "community_place",
+        "resource_category_label": "Community places",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 1",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#3d6e54"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.018697189123294,
+          -22.33807731366251
+        ]
+      },
+      "properties": {
+        "resource_id": "res_rennaissence_primary_school",
+        "resource_name": "Rennaissence primary school",
+        "resource_category": "education_youth",
+        "resource_category_label": "Education and youth",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 2,
+        "mentioned_by_groups": "NGO forums map 2; NGO forums map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#db537b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.03326674808937,
+          -22.330648036331965
+        ]
+      },
+      "properties": {
+        "resource_id": "res_bonwa_udi_primary_school",
+        "resource_name": "Bonwa-udi primary school",
+        "resource_category": "education_youth",
+        "resource_category_label": "Education and youth",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#db537b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.030409511885278,
+          -22.330974722765575
+        ]
+      },
+      "properties": {
+        "resource_id": "res_makushu_primary_school",
+        "resource_name": "Makushu primary school",
+        "resource_category": "education_youth",
+        "resource_category_label": "Education and youth",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#db537b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.027103227230597,
+          -22.33040271581515
+        ]
+      },
+      "properties": {
+        "resource_id": "res_musina_high_school",
+        "resource_name": "Musina high school",
+        "resource_category": "education_youth",
+        "resource_category_label": "Education and youth",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#db537b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.035866648650007,
+          -22.33392637157422
+        ]
+      },
+      "properties": {
+        "resource_id": "res_musina_youth_ministries",
+        "resource_name": "musina youth ministries",
+        "resource_category": "education_youth",
+        "resource_category_label": "Education and youth",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Service providers map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#db537b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.03476185657831,
+          -22.334649928777484
+        ]
+      },
+      "properties": {
+        "resource_id": "res_rixile_primary_school",
+        "resource_name": "Rixile primary school",
+        "resource_category": "education_youth",
+        "resource_category_label": "Education and youth",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#db537b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.032343087269346,
+          -22.349832293422818
+        ]
+      },
+      "properties": {
+        "resource_id": "res_rugby_stadium",
+        "resource_name": "rugby stadium",
+        "resource_category": "education_youth",
+        "resource_category_label": "Education and youth",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Service providers map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#db537b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.049076742523116,
+          -22.345841434274373
+        ]
+      },
+      "properties": {
+        "resource_id": "res_tvet_college",
+        "resource_name": "tvet college",
+        "resource_category": "education_youth",
+        "resource_category_label": "Education and youth",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Changemakers",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#db537b"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.03649854234303,
+          -22.33107574145957
+        ]
+      },
+      "properties": {
+        "resource_id": "res_roman_catholic_womens_shelter",
+        "resource_name": "roman catholic womens shelter",
+        "resource_category": "social_faith_support",
+        "resource_category_label": "Faith, shelter, and social support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 7,
+        "mentioned_by_groups": "Changemakers; Service providers map 1; Service providers map 2; Service providers map 3; NGO forums map 1; NGO forums map 2; NGO forums map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#ee7367"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.034384646241328,
+          -22.33585609813071
+        ]
+      },
+      "properties": {
+        "resource_id": "res_zcc_church",
+        "resource_name": "ZCC church",
+        "resource_category": "social_faith_support",
+        "resource_category_label": "Faith, shelter, and social support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Service providers map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#ee7367"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.042591346299886,
+          -22.341055796219127
+        ]
+      },
+      "properties": {
+        "resource_id": "res_mussina_hospital",
+        "resource_name": "Mussina hospital",
+        "resource_category": "health_care",
+        "resource_category_label": "Health and care",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 7,
+        "mentioned_by_groups": "Changemakers; Service providers map 2; Service providers map 3; Farm workers map 2; Farm workers map 5; Farm workers map 7; NGO forums map 1",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#e54752"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.03530830558039,
+          -22.332564997650334
+        ]
+      },
+      "properties": {
+        "resource_id": "res_red_cross",
+        "resource_name": "red cross",
+        "resource_category": "health_care",
+        "resource_category_label": "Health and care",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 6,
+        "mentioned_by_groups": "Changemakers; Service providers map 1; Service providers map 2; Service providers map 3; NGO forums map 1; NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#e54752"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.038465973235166,
+          -22.330947560400237
+        ]
+      },
+      "properties": {
+        "resource_id": "res_musina_clinic_nancefield_clinic",
+        "resource_name": "musina clinic (nancefield clinic)",
+        "resource_category": "health_care",
+        "resource_category_label": "Health and care",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 5,
+        "mentioned_by_groups": "Changemakers; Service providers map 2; Service providers map 3; Farm workers map 2; NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#e54752"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.039075895981416,
+          -22.342940770159554
+        ]
+      },
+      "properties": {
+        "resource_id": "res_future_families",
+        "resource_name": "future families",
+        "resource_category": "health_care",
+        "resource_category_label": "Health and care",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 3,
+        "mentioned_by_groups": "Service providers map 1; Service providers map 2; NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#e54752"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.038893116105235,
+          -22.335432034512912
+        ]
+      },
+      "properties": {
+        "resource_id": "res_new_start_clinic",
+        "resource_name": "new start clinic",
+        "resource_category": "health_care",
+        "resource_category_label": "Health and care",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 1",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#e54752"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.042296027862147,
+          -22.326601608833307
+        ]
+      },
+      "properties": {
+        "resource_id": "res_baobab_petrol_station",
+        "resource_name": "baobab petrol station",
+        "resource_category": "mobility_transport",
+        "resource_category_label": "Mobility and transport",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 3,
+        "mentioned_by_groups": "Changemakers; NGO forums map 1; NGO forums map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#ffc151"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.04308511702446,
+          -22.32666270078583
+        ]
+      },
+      "properties": {
+        "resource_id": "res_sediba_truck_stop",
+        "resource_name": "sediba truck stop",
+        "resource_category": "mobility_transport",
+        "resource_category_label": "Mobility and transport",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 3,
+        "mentioned_by_groups": "Changemakers; NGO forums map 1; NGO forums map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#ffc151"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.046706303953265,
+          -22.342000399391825
+        ]
+      },
+      "properties": {
+        "resource_id": "res_truck_stop",
+        "resource_name": "truck stop",
+        "resource_category": "mobility_transport",
+        "resource_category_label": "Mobility and transport",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 2,
+        "mentioned_by_groups": "Changemakers; NGO forums map 1",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#ffc151"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.041697512163243,
+          -22.34454111954957
+        ]
+      },
+      "properties": {
+        "resource_id": "res_old_taxi_rank",
+        "resource_name": "old taxi rank",
+        "resource_category": "mobility_transport",
+        "resource_category_label": "Mobility and transport",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Changemakers",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#ffc151"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.031314276924387,
+          -22.322550105390523
+        ]
+      },
+      "properties": {
+        "resource_id": "res_sangweni_truck_stop",
+        "resource_name": "sangweni truck stop",
+        "resource_category": "mobility_transport",
+        "resource_category_label": "Mobility and transport",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#ffc151"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.02490782166797,
+          -22.33565035428645
+        ]
+      },
+      "properties": {
+        "resource_id": "res_disability_centre",
+        "resource_name": "disability centre",
+        "resource_category": "other_resource",
+        "resource_category_label": "Other named resources",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 2,
+        "mentioned_by_groups": "Service providers map 1; Service providers map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#8a8a7a"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.036164592088166,
+          -22.331080895539486
+        ]
+      },
+      "properties": {
+        "resource_id": "res_musina_fm_studios",
+        "resource_name": "MUSINA FM STUDIOS",
+        "resource_category": "other_resource",
+        "resource_category_label": "Other named resources",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 2,
+        "mentioned_by_groups": "Changemakers; NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#8a8a7a"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.039644049759943,
+          -22.33634745538338
+        ]
+      },
+      "properties": {
+        "resource_id": "res_fire_station",
+        "resource_name": "fire station",
+        "resource_category": "other_resource",
+        "resource_category_label": "Other named resources",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Changemakers",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#8a8a7a"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.02880992166777,
+          -22.33302728708126
+        ]
+      },
+      "properties": {
+        "resource_id": "res_iphc",
+        "resource_name": "iphc",
+        "resource_category": "other_resource",
+        "resource_category_label": "Other named resources",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Service providers map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#8a8a7a"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.042281913158256,
+          -22.34333802032422
+        ]
+      },
+      "properties": {
+        "resource_id": "res_superspar",
+        "resource_name": "SuperSpar",
+        "resource_category": "other_resource",
+        "resource_category_label": "Other named resources",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 1",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#8a8a7a"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.043719269340073,
+          -22.34270470175667
+        ]
+      },
+      "properties": {
+        "resource_id": "res_police_station",
+        "resource_name": "Police station",
+        "resource_category": "state_legal_support",
+        "resource_category_label": "State and legal support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 8,
+        "mentioned_by_groups": "Changemakers; Service providers map 1; Service providers map 2; Service providers map 3; Farm workers map 2; Farm workers map 7; NGO forums map 1; NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#258a72"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.024009902063213,
+          -22.330622433749472
+        ]
+      },
+      "properties": {
+        "resource_id": "res_legal_adviec_office",
+        "resource_name": "Legal adviec office",
+        "resource_category": "state_legal_support",
+        "resource_category_label": "State and legal support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 4,
+        "mentioned_by_groups": "Service providers map 1; Service providers map 2; Service providers map 3; NGO forums map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#258a72"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.04540032174034,
+          -22.34831023710901
+        ]
+      },
+      "properties": {
+        "resource_id": "res_department_of_home_affairs",
+        "resource_name": "department of home affairs",
+        "resource_category": "state_legal_support",
+        "resource_category_label": "State and legal support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 2,
+        "mentioned_by_groups": "Service providers map 1; Service providers map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#258a72"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.038751131364005,
+          -22.34250445716124
+        ]
+      },
+      "properties": {
+        "resource_id": "res_lawyers_for_human_rights",
+        "resource_name": "lawyers for human rights",
+        "resource_category": "state_legal_support",
+        "resource_category_label": "State and legal support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 2,
+        "mentioned_by_groups": "Service providers map 2; Service providers map 3",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#258a72"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.03506216704349,
+          -22.350606138686192
+        ]
+      },
+      "properties": {
+        "resource_id": "res_department_of_labour",
+        "resource_name": "Department of labour",
+        "resource_category": "state_legal_support",
+        "resource_category_label": "State and legal support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 1",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#258a72"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.053164377714296,
+          -22.340569037007874
+        ]
+      },
+      "properties": {
+        "resource_id": "res_magistrates_court",
+        "resource_name": "Magistrates court",
+        "resource_category": "state_legal_support",
+        "resource_category_label": "State and legal support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Changemakers",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#258a72"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.03963115148034,
+          -22.348856208092716
+        ]
+      },
+      "properties": {
+        "resource_id": "res_post_office",
+        "resource_name": "Post office",
+        "resource_category": "state_legal_support",
+        "resource_category_label": "State and legal support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "NGO forums map 1",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#258a72"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.04926143333845,
+          -22.33827700599686
+        ]
+      },
+      "properties": {
+        "resource_id": "res_social_workers",
+        "resource_name": "social workers",
+        "resource_category": "state_legal_support",
+        "resource_category_label": "State and legal support",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Farm workers map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#258a72"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.028275379036437,
+          -22.32372540186417
+        ]
+      },
+      "properties": {
+        "resource_id": "res_china_city",
+        "resource_name": "china city",
+        "resource_category": "work_livelihoods",
+        "resource_category_label": "Work and livelihoods",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 2,
+        "mentioned_by_groups": "Changemakers; NGO forums map 1",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#b87022"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.032829311836515,
+          -22.332559162058804
+        ]
+      },
+      "properties": {
+        "resource_id": "res_mozee_night_club",
+        "resource_name": "Mozee night club",
+        "resource_category": "work_livelihoods",
+        "resource_category_label": "Work and livelihoods",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Service providers map 2",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#b87022"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          30.037754749198875,
+          -22.33061147913533
+        ]
+      },
+      "properties": {
+        "resource_id": "res_scrap_yard",
+        "resource_name": "scrap yard",
+        "resource_category": "work_livelihoods",
+        "resource_category_label": "Work and livelihoods",
+        "has_coordinates": true,
+        "include_in_map": true,
+        "mention_count": 1,
+        "mentioned_by_groups": "Changemakers",
+        "source_sheet": "Coordinates",
+        "source_type": "participatory_workshop_mapping",
+        "verification_status": "workshop_named_not_independently_verified",
+        "coordinate_status": "provided",
+        "coordinate_review_flag": "mapped_core_extent",
+        "notes": "Named in workshop/participatory mapping material. Coordinates should be checked before being treated as verified facility data.",
+        "color": "#b87022"
+      }
+    }
+  ]
+}

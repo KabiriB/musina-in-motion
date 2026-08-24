@@ -1,0 +1,74 @@
+[
+  {
+    "resource_category": "social_faith_support",
+    "resource_category_label": "Faith, shelter, and social support",
+    "resource_count": 20,
+    "mapped_count": 2,
+    "total_mentions": 54,
+    "color": "#ee7367"
+  },
+  {
+    "resource_category": "health_care",
+    "resource_category_label": "Health and care",
+    "resource_count": 13,
+    "mapped_count": 5,
+    "total_mentions": 40,
+    "color": "#e54752"
+  },
+  {
+    "resource_category": "work_livelihoods",
+    "resource_category_label": "Work and livelihoods",
+    "resource_count": 17,
+    "mapped_count": 3,
+    "total_mentions": 35,
+    "color": "#b87022"
+  },
+  {
+    "resource_category": "other_resource",
+    "resource_category_label": "Other named resources",
+    "resource_count": 24,
+    "mapped_count": 5,
+    "total_mentions": 31,
+    "color": "#8a8a7a"
+  },
+  {
+    "resource_category": "state_legal_support",
+    "resource_category_label": "State and legal support",
+    "resource_count": 13,
+    "mapped_count": 8,
+    "total_mentions": 27,
+    "color": "#258a72"
+  },
+  {
+    "resource_category": "education_youth",
+    "resource_category_label": "Education and youth",
+    "resource_count": 12,
+    "mapped_count": 8,
+    "total_mentions": 24,
+    "color": "#db537b"
+  },
+  {
+    "resource_category": "community_place",
+    "resource_category_label": "Community places",
+    "resource_count": 12,
+    "mapped_count": 1,
+    "total_mentions": 19,
+    "color": "#3d6e54"
+  },
+  {
+    "resource_category": "mobility_transport",
+    "resource_category_label": "Mobility and transport",
+    "resource_count": 10,
+    "mapped_count": 5,
+    "total_mentions": 19,
+    "color": "#ffc151"
+  },
+  {
+    "resource_category": "water_basic_services",
+    "resource_category_label": "Water and basic services",
+    "resource_count": 7,
+    "mapped_count": 0,
+    "total_mentions": 18,
+    "color": "#6ec9b0"
+  }
+]

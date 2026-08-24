@@ -1,0 +1,35 @@
+:root {
+  /* GEMMS visual identity palette */
+  --gemms-teal: #258a72;
+  --gemms-deep-green: #3d6e54;
+  --gemms-rose: #db537b;
+  --gemms-gold: #ffc151;
+  --gemms-charcoal: #3c3c3c;
+  --gemms-coral: #ee7367;
+  --gemms-red: #e54752;
+  --gemms-ochre: #b87022;
+
+  /* Interface palette: intentionally restrained */
+  --bg-0: #111816;
+  --bg-1: #18231f;
+  --bg-2: #22302b;
+  --panel: rgba(255, 250, 241, 0.94);
+  --panel-soft: rgba(255, 250, 241, 0.08);
+  --panel-line: rgba(255, 250, 241, 0.16);
+  --text-main: #fffaf1;
+  --text-muted: rgba(255, 250, 241, 0.72);
+  --text-dark: #222622;
+  --text-dark-muted: rgba(34, 38, 34, 0.68);
+  --map-ward-fill: rgba(37, 138, 114, 0.16);
+  --map-ward-line: #3d6e54;
+  --map-block: #ffc151;
+  --map-block-stroke: #111816;
+  --danger: #e54752;
+
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --shadow-soft: 0 22px 70px rgba(0, 0, 0, 0.26);
+  --shadow-card: 0 18px 45px rgba(0, 0, 0, 0.16);
+  --max-width: 1440px;
+}
