@@ -1,21 +1,20 @@
-import { Compass, Info, MoveRight, ShieldCheck } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import maplibregl from 'maplibre-gl';
+import { Compass, MoveRight, ShieldCheck } from 'lucide-react';
 import SectionHeader from './SectionHeader.jsx';
 import { formatNumber, formatPercent } from '../utils/formatters.js';
+import { africaContext } from '../data/africaContext.js';
 
-const COUNTRY_POSITIONS = {
-  // Positions are deliberately hand-tuned for label clarity.
-  // They are schematic relationship positions, not geographic coordinates.
-  Zimbabwe: { x: 67, y: 43, label: 'right', labelDx: 7.8, labelDy: -5.8, metaDy: 3.2, importance: 'major' },
-  'South Africa': { x: 42, y: 80, label: 'right', labelDx: 7.3, labelDy: -1.5, metaDy: 7.6, importance: 'major' },
-  Malawi: { x: 76, y: 25, label: 'right', labelDx: 7.4, labelDy: -3.2, metaDy: 5.2, importance: 'minor' },
-  Ethiopia: { x: 82, y: 12, label: 'right', labelDx: 7.2, labelDy: -1.6, metaDy: 6.0, importance: 'minor' },
-  Burundi: { x: 37, y: 49, label: 'left', labelDx: -7.2, labelDy: -2.2, metaDy: 5.4, importance: 'minor' },
-  'Democratic Republic of Congo': { x: 25, y: 32, label: 'right', labelDx: 7.1, labelDy: -2.0, metaDy: 5.8, importance: 'minor' },
-  'Other / small-count countries': { x: 20, y: 66, label: 'right', labelDx: 7.2, labelDy: -1.6, metaDy: 6.0, importance: 'grouped' },
-  'Missing / unknown': { x: 16, y: 83, label: 'right', labelDx: 7.0, labelDy: -1.6, metaDy: 5.8, importance: 'minor' },
+const COUNTRY_META = {
+  Zimbabwe: { iso: 'ZWE', lng: 29.3217, lat: -19.0037 },
+  'South Africa': { iso: 'ZAF', lng: 26.1476, lat: -28.4085 },
+  Malawi: { iso: 'MWI', lng: 33.6684, lat: -13.1746 },
+  Ethiopia: { iso: 'ETH', lng: 38.7264, lat: 9.3620 },
+  Burundi: { iso: 'BDI', lng: 29.9571, lat: -3.4639 },
+  'Democratic Republic of Congo': { iso: 'COD', lng: 22.3906, lat: -4.0993 },
 };
 
-const MUSINA = { x: 58, y: 66 };
+const MUSINA = { lng: 30.0481, lat: -22.3608 };
 
 function normalizeRows(countrySummary, sourceType) {
   return (countrySummary ?? [])
@@ -26,7 +25,6 @@ function normalizeRows(countrySummary, sourceType) {
       n: Number(row.n ?? 0),
       pct: Number(row.pct ?? 0),
       displayRule: row.display_rule,
-      position: COUNTRY_POSITIONS[row.country_display] ?? COUNTRY_POSITIONS['Other / small-count countries'],
     }))
     .sort((a, b) => b.n - a.n);
 }
@@ -35,28 +33,18 @@ function buildComparison(countrySummary) {
   const birthRows = normalizeRows(countrySummary, 'birthplace_country');
   const recentRows = normalizeRows(countrySummary, 'recent_origin_country');
   const countries = Array.from(new Set([...birthRows.map((row) => row.country), ...recentRows.map((row) => row.country)]));
-
-  return countries
-    .map((country) => {
-      const birth = birthRows.find((row) => row.country === country);
-      const recent = recentRows.find((row) => row.country === country);
-      return {
-        country,
-        birthN: birth?.n ?? 0,
-        birthPct: birth?.pct ?? 0,
-        recentN: recent?.n ?? 0,
-        recentPct: recent?.pct ?? 0,
-        displayRule: birth?.displayRule ?? recent?.displayRule,
-        position: COUNTRY_POSITIONS[country] ?? COUNTRY_POSITIONS['Other / small-count countries'],
-      };
-    })
-    .sort((a, b) => Math.max(b.birthN, b.recentN) - Math.max(a.birthN, a.recentN));
-}
-
-function curvePath(from, to, lift = -16) {
-  const midX = (from.x + to.x) / 2;
-  const midY = (from.y + to.y) / 2 + lift;
-  return `M ${from.x} ${from.y} Q ${midX} ${midY} ${to.x} ${to.y}`;
+  return countries.map((country) => {
+    const birth = birthRows.find((row) => row.country === country);
+    const recent = recentRows.find((row) => row.country === country);
+    return {
+      country,
+      birthN: birth?.n ?? 0,
+      birthPct: birth?.pct ?? 0,
+      recentN: recent?.n ?? 0,
+      recentPct: recent?.pct ?? 0,
+      displayRule: birth?.displayRule ?? recent?.displayRule,
+    };
+  }).sort((a, b) => Math.max(b.birthN, b.recentN) - Math.max(a.birthN, a.recentN));
 }
 
 function countryShortName(country) {
@@ -65,190 +53,192 @@ function countryShortName(country) {
   return country;
 }
 
-function FlowLine({ row, type }) {
-  const isRecent = type === 'recent';
-  const value = isRecent ? row.recentPct : row.birthPct;
-  if (!value) return null;
-
-  const strokeWidth = Math.max(0.9, Math.min(7.2, value / 9.5));
-  const path = curvePath(row.position, MUSINA, isRecent ? -7 : 10);
-  const opacityClass = value < 2 ? 'soft' : value > 40 ? 'dominant' : '';
-
-  return (
-    <path
-      className={`flow-path ${isRecent ? 'recent' : 'birth'} ${opacityClass}`}
-      d={path}
-      strokeWidth={strokeWidth}
-      vectorEffect="non-scaling-stroke"
-    />
-  );
+function modeValue(row, mode) {
+  return mode === 'birthplace' ? row.birthPct : row.recentPct;
 }
 
-function CountryNode({ row }) {
-  const maxPct = Math.max(row.birthPct, row.recentPct);
-  const radius = Math.max(3.6, Math.min(8.2, 3 + maxPct / 14));
-  const labelOnLeft = row.position.label === 'left';
-  const textX = row.position.labelDx ?? (labelOnLeft ? -(radius + 5) : radius + 5);
-  const labelY = row.position.labelDy ?? -1;
-  const metaY = row.position.metaDy ?? 7.5;
-  const textAnchor = labelOnLeft ? 'end' : 'start';
+function geoData(comparison, mode) {
+  const byIso = new Map();
+  comparison.forEach((row) => {
+    const meta = COUNTRY_META[row.country];
+    if (meta) byIso.set(meta.iso, { pct: modeValue(row, mode), n: mode === 'birthplace' ? row.birthN : row.recentN, country: row.country });
+  });
+  return {
+    ...africaContext,
+    features: africaContext.features.map((feature) => {
+      const datum = byIso.get(feature.properties.iso_a3);
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          pct: datum?.pct ?? 0,
+          n: datum?.n ?? 0,
+          data_country: datum?.country ?? null,
+        },
+      };
+    }),
+  };
+}
 
-  return (
-    <g className={`country-node ${row.position.importance ?? 'minor'}`} transform={`translate(${row.position.x} ${row.position.y})`}>
-      <circle className="country-node-halo" r={radius + 4.6} />
-      <circle className="country-node-dot" r={radius} />
-      <text className="country-node-label" x={textX} y={labelY} textAnchor={textAnchor}>
-        {countryShortName(row.country)}
-      </text>
-      <text className="country-node-meta" x={textX} y={metaY} textAnchor={textAnchor}>
-        born {row.birthPct.toFixed(1)}% · recent {row.recentPct.toFixed(1)}%
-      </text>
-    </g>
-  );
+const regionalStyle = {
+  version: 8,
+  sources: {},
+  layers: [{ id: 'regional-background', type: 'background', paint: { 'background-color': '#f2eee5' } }],
+};
+
+function RegionalGeoMap({ comparison, mode }) {
+  const containerRef = useRef(null);
+  const mapRef = useRef(null);
+  const markersRef = useRef([]);
+  const loadedRef = useRef(false);
+
+  useEffect(() => {
+    if (!containerRef.current || mapRef.current) return undefined;
+    const map = new maplibregl.Map({
+      container: containerRef.current,
+      style: regionalStyle,
+      center: [27, -10],
+      zoom: 2.35,
+      minZoom: 1.6,
+      maxZoom: 6,
+      attributionControl: false,
+    });
+    mapRef.current = map;
+    map.once('load', () => {
+      loadedRef.current = true;
+      map.addSource('africa-countries', { type: 'geojson', data: geoData(comparison, mode) });
+      map.addLayer({
+        id: 'africa-fill', type: 'fill', source: 'africa-countries',
+        paint: {
+          'fill-color': ['interpolate', ['linear'], ['coalesce', ['get', 'pct'], 0], 0, '#eee9df', 2, '#d3e5dd', 10, '#9bcbbd', 30, '#5ca58e', 60, '#258a72'],
+          'fill-opacity': 0.95,
+        },
+      });
+      map.addLayer({
+        id: 'africa-line', type: 'line', source: 'africa-countries',
+        paint: { 'line-color': '#68716c', 'line-width': 0.9, 'line-opacity': 0.72 },
+      });
+      map.addSource('musina-point', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [MUSINA.lng, MUSINA.lat] } } });
+      map.addLayer({
+        id: 'musina-halo', type: 'circle', source: 'musina-point',
+        paint: { 'circle-radius': 14, 'circle-color': '#ffc151', 'circle-opacity': 0.22, 'circle-blur': 0.35 },
+      });
+      map.addLayer({
+        id: 'musina-dot', type: 'circle', source: 'musina-point',
+        paint: { 'circle-radius': 5.5, 'circle-color': '#ffc151', 'circle-stroke-color': '#111816', 'circle-stroke-width': 1.6 },
+      });
+      try { map.fitBounds([[10, -35], [48, 15]], { padding: 34, duration: 0 }); } catch {}
+    });
+
+    const observer = new ResizeObserver(() => { try { map.resize(); } catch {} });
+    observer.observe(containerRef.current);
+    return () => {
+      observer.disconnect();
+      markersRef.current.forEach((marker) => marker.remove());
+      markersRef.current = [];
+      try { map.remove(); } catch {}
+      mapRef.current = null;
+      loadedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return undefined;
+    const update = () => {
+      const source = map.getSource('africa-countries');
+      source?.setData?.(geoData(comparison, mode));
+
+      markersRef.current.forEach((marker) => marker.remove());
+      markersRef.current = [];
+      comparison.forEach((row) => {
+        const meta = COUNTRY_META[row.country];
+        const pct = modeValue(row, mode);
+        if (!meta || pct <= 0) return;
+        const el = document.createElement('div');
+        el.className = `regional-country-marker ${pct >= 20 ? 'is-major' : ''}`;
+        el.innerHTML = `<strong>${countryShortName(row.country)}</strong><span>${pct.toFixed(1)}%</span>`;
+        const marker = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([meta.lng, meta.lat]).addTo(map);
+        markersRef.current.push(marker);
+      });
+
+      const musinaEl = document.createElement('div');
+      musinaEl.className = 'regional-musina-label';
+      musinaEl.innerHTML = '<strong>Musina</strong><span>study location</span>';
+      markersRef.current.push(new maplibregl.Marker({ element: musinaEl, anchor: 'left', offset: [8, 0] }).setLngLat([MUSINA.lng, MUSINA.lat]).addTo(map));
+    };
+
+    if (loadedRef.current) update();
+    else map.once('load', update);
+    return () => { try { map.off('load', update); } catch {} };
+  }, [comparison, mode]);
+
+  return <div className="regional-geo-map" ref={containerRef} aria-label={`${mode === 'birthplace' ? 'Birthplace' : 'Recent origin'} geography across Africa`} />;
 }
 
 function ComparisonRow({ row }) {
   const maxPct = Math.max(row.birthPct, row.recentPct, 1);
   return (
     <article className="country-comparison-row">
-      <div>
-        <h4>{countryShortName(row.country)}</h4>
-        <p>
-          Born: {formatNumber(row.birthN)} · Recent origin: {formatNumber(row.recentN)}
-        </p>
-      </div>
+      <div><h4>{countryShortName(row.country)}</h4><p>Born: {formatNumber(row.birthN)} · Recent origin: {formatNumber(row.recentN)}</p></div>
       <div className="comparison-bars" aria-label={`${row.country} birthplace and recent-origin comparison`}>
-        <div className="mini-bar-line">
-          <span>Born</span>
-          <div className="mini-bar-track"><i className="birth" style={{ width: `${(row.birthPct / maxPct) * 100}%` }} /></div>
-          <strong>{formatPercent(row.birthPct)}</strong>
-        </div>
-        <div className="mini-bar-line">
-          <span>Recent</span>
-          <div className="mini-bar-track"><i className="recent" style={{ width: `${(row.recentPct / maxPct) * 100}%` }} /></div>
-          <strong>{formatPercent(row.recentPct)}</strong>
-        </div>
+        <div className="mini-bar-line"><span>Born</span><div className="mini-bar-track"><i className="birth" style={{ width: `${(row.birthPct / maxPct) * 100}%` }} /></div><strong>{formatPercent(row.birthPct)}</strong></div>
+        <div className="mini-bar-line"><span>Recent</span><div className="mini-bar-track"><i className="recent" style={{ width: `${(row.recentPct / maxPct) * 100}%` }} /></div><strong>{formatPercent(row.recentPct)}</strong></div>
       </div>
     </article>
   );
 }
 
 export default function RegionalMobilityField({ countrySummary }) {
-  const comparison = buildComparison(countrySummary);
+  const [mode, setMode] = useState('birthplace');
+  const comparison = useMemo(() => buildComparison(countrySummary), [countrySummary]);
   const zimbabwe = comparison.find((row) => row.country === 'Zimbabwe');
   const southAfrica = comparison.find((row) => row.country === 'South Africa');
   const displayRows = comparison.slice(0, 7);
 
   return (
     <section className="section regional-section" id="regional-field">
-      <SectionHeader kicker="Regional mobility field" title="Birthplace, recent origin, and Musina as hinge">
-        This section keeps two ideas separate: where respondents were born and where they most
-        recently migrated from. The difference matters because Musina is not only a point of arrival;
-        it is connected to regional movement, internal circulation, and repeated settlement routines.
+      <SectionHeader kicker="Regional mobility geography" title="Changing what we mean by origin changes the map">
+        Birthplace records where a person was born. Recent origin records where a person most recently moved from before Musina. Keeping those temporal geographies separate reveals a different regional pattern without pretending that either one is an individual route.
       </SectionHeader>
 
-      <div className="regional-shell">
-        <div className="regional-map-card">
-          <div className="regional-card-header">
-            <div>
-              <p className="map-kicker">Analytical connection field</p>
-              <h3>Regional connections to Musina</h3>
-            </div>
-            <div className="flow-legend" aria-label="Regional flow legend">
-              <span><i className="birth" /> Birthplace</span>
-              <span><i className="recent" /> Recent origin</span>
+      <div className="regional-geo-layout">
+        <div className="regional-geography-card">
+          <div className="regional-card-header regional-card-header--geo">
+            <div><p className="map-kicker">Actual country geography</p><h3>{mode === 'birthplace' ? 'Birthplace' : 'Recent origin'}</h3></div>
+            <div className="regional-mode-toggle" aria-label="Switch regional geography">
+              <button type="button" className={mode === 'birthplace' ? 'is-active' : ''} onClick={() => setMode('birthplace')}>Birthplace</button>
+              <button type="button" className={mode === 'recent' ? 'is-active' : ''} onClick={() => setMode('recent')}>Recent origin</button>
             </div>
           </div>
-
-          <div className="read-this-card">
-            <Info size={16} />
-            <p>
-              Read this as a relationship field, not a route map. Larger nodes and thicker lines
-              indicate stronger country-level signals in the cleaned data.
-            </p>
-          </div>
-
-          <svg className="regional-flow-svg" viewBox="0 0 100 100" role="img" aria-label="Regional mobility connection field showing birthplace and recent-origin links to Musina">
-            <defs>
-              <radialGradient id="musinaGlow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#ffc151" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#ffc151" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-            <rect x="0" y="0" width="100" height="100" rx="3" className="regional-svg-bg" />
-            <path className="region-guide-line" d="M 15 72 C 33 58, 43 48, 58 66 S 73 40, 86 14" />
-            <path className="region-guide-line soft" d="M 34 86 C 47 74, 54 69, 58 66 S 61 54, 67 43" />
-
-            {displayRows.map((row) => <FlowLine key={`${row.country}-birth`} row={row} type="birth" />)}
-            {displayRows.map((row) => <FlowLine key={`${row.country}-recent`} row={row} type="recent" />)}
-            {displayRows.map((row) => <CountryNode key={row.country} row={row} />)}
-
-            <g className="musina-node" transform={`translate(${MUSINA.x} ${MUSINA.y})`}>
-              <circle r="13" fill="url(#musinaGlow)" />
-              <circle r="5.8" />
-              <text x="8" y="0">Musina</text>
-              <text x="8" y="8">survey anchor</text>
-            </g>
-          </svg>
-
-          <div className="map-note regional-note">
-            <ShieldCheck size={16} />
-            <span>Lines are analytical connections, not literal travel routes. Small-count countries are grouped.</span>
-          </div>
+          <RegionalGeoMap comparison={comparison} mode={mode} />
+          <div className="regional-scale-legend"><span>lower share</span><i /><span>higher share</span></div>
+          <div className="map-note regional-note"><ShieldCheck size={16} /><span>Country fills show aggregated shares. Country labels are analytical anchors within real country geometries; they are not respondent locations or travel routes. Country boundaries: Natural Earth.</span></div>
         </div>
 
-        <aside className="regional-briefing-card">
-          <p className="panel-kicker">What the regional field says</p>
-          <h3>Musina is not a simple destination point.</h3>
-          <p>
-            The cleaned data show a strong Zimbabwe connection in both birthplace and recent-origin
-            fields, but South Africa becomes more visible as a recent origin than as a birthplace.
-            That is a small but important signal of circulation through places inside South Africa,
-            not only direct movement from outside the country.
-          </p>
-          <div className="regional-logic-strip" aria-label="How to read birthplace versus recent origin">
-            <span><Compass size={15} /> Birthplace = origin in life history</span>
-            <span><MoveRight size={15} /> Recent origin = last migration link</span>
+        <aside className="regional-briefing-card regional-briefing-card--geo">
+          <p className="panel-kicker">Where does somebody come from — when?</p>
+          <h3>The temporal definition changes the geography.</h3>
+          <p>Zimbabwe remains the strongest country-level connection in both views. South Africa becomes more prominent when the question changes from birthplace to recent origin, signalling movement through places inside South Africa before Musina.</p>
+          <div className="regional-logic-strip">
+            <span><Compass size={15} /> Birthplace = where a person was born</span>
+            <span><MoveRight size={15} /> Recent origin = last migration link before Musina</span>
           </div>
           <div className="regional-insight-grid">
-            <div className="regional-insight-card">
-              <Compass size={18} />
-              <span>Zimbabwe-born</span>
-              <strong>{formatPercent(zimbabwe?.birthPct)}</strong>
-            </div>
-            <div className="regional-insight-card">
-              <MoveRight size={18} />
-              <span>Recent origin Zimbabwe</span>
-              <strong>{formatPercent(zimbabwe?.recentPct)}</strong>
-            </div>
-            <div className="regional-insight-card">
-              <Compass size={18} />
-              <span>SA-born</span>
-              <strong>{formatPercent(southAfrica?.birthPct)}</strong>
-            </div>
-            <div className="regional-insight-card">
-              <MoveRight size={18} />
-              <span>Recent origin South Africa</span>
-              <strong>{formatPercent(southAfrica?.recentPct)}</strong>
-            </div>
+            <div className="regional-insight-card"><Compass size={18} /><span>Zimbabwe-born</span><strong>{formatPercent(zimbabwe?.birthPct)}</strong></div>
+            <div className="regional-insight-card"><MoveRight size={18} /><span>Recent origin Zimbabwe</span><strong>{formatPercent(zimbabwe?.recentPct)}</strong></div>
+            <div className="regional-insight-card"><Compass size={18} /><span>South Africa-born</span><strong>{formatPercent(southAfrica?.birthPct)}</strong></div>
+            <div className="regional-insight-card"><MoveRight size={18} /><span>Recent origin South Africa</span><strong>{formatPercent(southAfrica?.recentPct)}</strong></div>
           </div>
         </aside>
       </div>
 
       <div className="country-comparison-card">
         <div className="comparison-card-heading">
-          <div>
-            <p className="map-kicker">Birthplace versus recent origin</p>
-            <h3>Two geographies, two meanings</h3>
-          </div>
-          <p>
-            Birthplace tells us where people are originally from. Recent origin tells us the last
-            place from which they moved to Musina. The interface keeps them separate by design.
-          </p>
+          <div><p className="map-kicker">Birthplace versus recent origin</p><h3>Two temporal geographies, two meanings</h3></div>
+          <p>The same participants produce different country-level patterns depending on whether “origin” refers to birthplace or the most recent place of migration before Musina.</p>
         </div>
-        <div className="country-comparison-list">
-          {displayRows.map((row) => <ComparisonRow key={`comparison-${row.country}`} row={row} />)}
-        </div>
+        <div className="country-comparison-list">{displayRows.map((row) => <ComparisonRow key={`comparison-${row.country}`} row={row} />)}</div>
       </div>
     </section>
   );

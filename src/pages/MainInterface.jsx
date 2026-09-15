@@ -9,6 +9,7 @@ import ParticipatoryResources from '../components/ParticipatoryResources.jsx';
 import MethodsNote from '../components/MethodsNote.jsx';
 import { ErrorState, LoadingState } from '../components/LoadingState.jsx';
 import { loadMusinaData } from '../utils/data.js';
+import { siteCopy } from '../content/siteCopy.js';
 
 export default function MainInterface() {
   const [data, setData] = useState(null);
@@ -16,18 +17,8 @@ export default function MainInterface() {
 
   useEffect(() => {
     let ignore = false;
-
-    loadMusinaData()
-      .then((loadedData) => {
-        if (!ignore) setData(loadedData);
-      })
-      .catch((loadError) => {
-        if (!ignore) setError(loadError);
-      });
-
-    return () => {
-      ignore = true;
-    };
+    loadMusinaData().then((loadedData) => { if (!ignore) setData(loadedData); }).catch((loadError) => { if (!ignore) setError(loadError); });
+    return () => { ignore = true; };
   }, []);
 
   return (
@@ -41,29 +32,14 @@ export default function MainInterface() {
             <Hero metadata={data.metadata} />
             <RegionalMobilityField countrySummary={data.countrySummary} />
             <LocalAtlas wardsGeojson={data.wardsGeojson} blocksGeojson={data.blocksGeojson} />
-            <InfrastructureLandscape
-              wardsGeojson={data.wardsGeojson}
-              blocksGeojson={data.blocksGeojson}
-              infrastructureGeojson={data.infrastructureGeojson}
-              nearestInfrastructure={data.nearestInfrastructure}
-              petrolCandidatesGeojson={data.petrolCandidatesGeojson}
-              petrolCandidates={data.petrolCandidates}
-            />
-            <ParticipatoryResources
-              wardsGeojson={data.wardsGeojson}
-              blocksGeojson={data.blocksGeojson}
-              resourcesGeojson={data.participatoryResourcesGeojson}
-              resources={data.participatoryResources}
-              categorySummary={data.participatoryResourceCategorySummary}
-            />
+            <InfrastructureLandscape wardsGeojson={data.wardsGeojson} blocksGeojson={data.blocksGeojson} infrastructureGeojson={data.infrastructureGeojson} />
+            <ParticipatoryResources wardsGeojson={data.wardsGeojson} blocksGeojson={data.blocksGeojson} resourcesGeojson={data.participatoryResourcesGeojson} resources={data.participatoryResources} categorySummary={data.participatoryResourceCategorySummary} />
             <WardEcology wardSummary={data.wardSummary} />
             <MethodsNote metadata={data.metadata} />
           </>
         )}
       </main>
-      <footer className="footer">
-        Musina in Motion · survey interface · QA-checked data spine · block-level summaries are privacy-screened.
-      </footer>
+      <footer className="footer">{siteCopy.survey.footer}</footer>
     </div>
   );
 }

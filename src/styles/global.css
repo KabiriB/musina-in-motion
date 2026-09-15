@@ -772,7 +772,7 @@ button {
 
 .legend-dot.trade { background: var(--gemms-gold); }
 .legend-dot.farm { background: var(--gemms-teal); }
-.legend-dot.township { background: var(--gemms-pink); }
+.legend-dot.township { background: var(--gemms-rose); }
 .legend-dot.residential { background: var(--gemms-ochre); }
 
 .legend-ring {
@@ -1568,7 +1568,7 @@ button {
 .infra-count-icon.transport_node,
 .infra-type-pill.transport_node { background: rgba(61, 110, 84, 0.2); color: #8fd7b5; }
 .infra-count-icon.border_crossing,
-.infra-type-pill.border_crossing { background: rgba(219, 83, 123, 0.18); color: var(--gemms-pink); }
+.infra-type-pill.border_crossing { background: rgba(219, 83, 123, 0.18); color: var(--gemms-rose); }
 .infra-count-icon.petrol_station,
 .infra-type-pill.petrol_station { background: rgba(184, 112, 34, 0.24); color: var(--gemms-ochre); }
 
@@ -1759,7 +1759,7 @@ button {
 .legend-dot.school { background: var(--gemms-gold); }
 .legend-dot.police { background: var(--gemms-teal); }
 .legend-dot.transport { background: var(--gemms-deep-green); }
-.legend-dot.border { background: var(--gemms-pink); }
+.legend-dot.border { background: var(--gemms-rose); }
 .legend-dot.petrol { background: var(--gemms-ochre); border: 1px dashed rgba(255, 250, 241, 0.9); }
 .legend-dot.block-context { background: rgba(34, 38, 34, 0.72); border: 1px solid rgba(255, 250, 241, 0.85); }
 
@@ -2071,7 +2071,7 @@ button {
 .legend-dot.resource-health { background: var(--gemms-red); }
 .legend-dot.resource-state { background: var(--gemms-teal); }
 .legend-dot.resource-mobility { background: var(--gemms-gold); }
-.legend-dot.resource-education { background: var(--gemms-pink); }
+.legend-dot.resource-education { background: var(--gemms-rose); }
 .legend-dot.resource-faith { background: var(--gemms-coral); }
 .legend-dot.resource-work { background: var(--gemms-ochre); }
 

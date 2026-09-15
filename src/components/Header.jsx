@@ -1,7 +1,7 @@
 export default function Header({ mode = 'survey' }) {
   const surveyLinks = [
     ['Opening', '#opening'],
-    ['Regional field', '#regional-field'],
+    ['Regional geography', '#regional-field'],
     ['Local atlas', '#local-atlas'],
     ['Infrastructure', '#infrastructure'],
     ['Resources', '#participatory-resources'],
@@ -21,13 +21,13 @@ export default function Header({ mode = 'survey' }) {
         </a>
         <nav className="nav-links" aria-label="Project pages">
           <a className="nav-link" href="./">Home</a>
-          <a className={`nav-link ${mode === 'survey' ? 'nav-link--active' : ''}`} href="./survey.html">Survey interface</a>
+          <a className={`nav-link ${mode === 'survey' ? 'nav-link--active' : ''}`} href="./survey.html">Survey atlas</a>
           <a className={`nav-link ${mode === 'journeys' ? 'nav-link--active' : ''}`} href="./journeys.html">Narrated journeys</a>
         </nav>
       </div>
       {mode === 'survey' && (
         <div className="header-subnav-wrap">
-          <nav className="header-subnav" aria-label="Survey interface sections">
+          <nav className="header-subnav" aria-label="Survey atlas sections">
             {surveyLinks.map(([label, href]) => (
               <a key={href} className="subnav-link" href={href}>{label}</a>
             ))}

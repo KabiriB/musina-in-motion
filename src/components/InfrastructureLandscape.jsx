@@ -1,18 +1,17 @@
 import { useMemo, useState } from 'react';
-import { Building2, Cross, Fuel, GraduationCap, Landmark, MapPin, Route, ShieldCheck, TrainFront } from 'lucide-react';
+import { Building2, Cross, GraduationCap, Landmark, MapPin, Route, ShieldCheck, TrainFront } from 'lucide-react';
 import InfrastructureMap from './InfrastructureMap.jsx';
 import SectionHeader from './SectionHeader.jsx';
 
 const TYPE_LABELS = {
   school: 'Schools',
-  health: 'Health facilities',
+  health: 'Health services',
   police: 'Police',
   transport_node: 'Transport nodes',
-  border_crossing: 'Border crossing',
-  petrol_station: 'Candidate petrol / fuel nodes',
+  border_crossing: 'Border anchors',
 };
 
-const TYPE_ORDER = ['health', 'school', 'police', 'transport_node', 'border_crossing', 'petrol_station'];
+const TYPE_ORDER = ['health', 'school', 'police', 'transport_node', 'border_crossing'];
 
 const TYPE_ICONS = {
   school: GraduationCap,
@@ -20,7 +19,6 @@ const TYPE_ICONS = {
   police: ShieldCheck,
   transport_node: TrainFront,
   border_crossing: Landmark,
-  petrol_station: Fuel,
 };
 
 function TypeIcon({ type, size = 17 }) {
@@ -28,62 +26,38 @@ function TypeIcon({ type, size = 17 }) {
   return <Icon size={size} />;
 }
 
-function formatDistance(value) {
-  if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
-  return `${Number(value).toFixed(2)} km`;
+function publicInfrastructure(geojson) {
+  if (!geojson?.features) return geojson;
+  return {
+    ...geojson,
+    features: geojson.features.filter((feature) => feature.properties?.subtype !== 'dental_clinic'),
+  };
 }
 
-function getInfraCounts(infrastructureGeojson, petrolCandidatesGeojson) {
+function getInfraCounts(infrastructureGeojson) {
   const counts = {};
   infrastructureGeojson?.features?.forEach((feature) => {
     const type = feature.properties?.type ?? 'other';
     counts[type] = (counts[type] ?? 0) + 1;
   });
-  petrolCandidatesGeojson?.features?.forEach((feature) => {
-    const type = feature.properties?.type ?? 'petrol_station';
-    counts[type] = (counts[type] ?? 0) + 1;
-  });
   return counts;
 }
 
-function nearestSummaryRows(nearestInfrastructure) {
-  if (!nearestInfrastructure?.length) return [];
-
-  const distanceFields = [
-    ['nearest_health', 'Health facility'],
-    ['nearest_school', 'School'],
-    ['nearest_police', 'Police station'],
-    ['nearest_transport_or_border', 'Transport / border node'],
-  ];
-
-  return distanceFields.map(([prefix, label]) => {
-    const distances = nearestInfrastructure
-      .map((row) => Number(row[`${prefix}_distance_km`]))
-      .filter((value) => Number.isFinite(value));
-
-    if (!distances.length) {
-      return { label, min: null, median: null, max: null };
-    }
-
-    const sorted = [...distances].sort((a, b) => a - b);
-    const mid = Math.floor(sorted.length / 2);
-    const median = sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
-
-    return {
-      label,
-      min: sorted[0],
-      median,
-      max: sorted[sorted.length - 1],
-    };
-  });
+function evidenceLabel(value) {
+  if (value === 'A') return 'Official source';
+  if (value === 'B') return 'Official record, geocoded';
+  if (value === 'C') return 'Contextual geographic source';
+  return 'Contextual source';
 }
 
-function sourceConfidenceLabel(value) {
-  if (value === 'A') return 'A · official coordinate source';
-  if (value === 'B') return 'B · official name/address, geocoded';
-  if (value === 'C') return 'C · open/contextual source';
-  if (value === 'D') return 'D · temporary candidate';
-  return value ?? 'Unclassified source';
+function facilityNote(p) {
+  if (p.type === 'health') {
+    return 'Shown as a health-service anchor for orientation. This point is not used here as a complete public-PHC register or as an access score.';
+  }
+  if (p.source_confidence === 'C') {
+    return 'Shown as a contextual geographic anchor. Use the point for orientation rather than as evidence of service quality, availability or use.';
+  }
+  return 'Shown as a contextual service anchor. Presence on the map does not establish use, quality, affordability or effective access.';
 }
 
 function FacilityPanel({ selectedFacility }) {
@@ -91,64 +65,42 @@ function FacilityPanel({ selectedFacility }) {
     return (
       <aside className="infrastructure-panel empty-state-card">
         <Building2 size={22} />
-        <h3>Select an infrastructure point</h3>
-        <p>
-          Click a school, health facility, police station, transport node, or border anchor to see
-          what kind of point it is and how confident we are about the source.
-        </p>
+        <h3>Select a service anchor</h3>
+        <p>Choose a mapped point to see what kind of service or mobility anchor it represents and the source class behind the location.</p>
       </aside>
     );
   }
 
   const p = selectedFacility.properties;
-
   return (
     <aside className="infrastructure-panel">
       <div className="infra-panel-header">
-        <span className={`infra-type-pill ${p.type}`}>
-          <TypeIcon type={p.type} size={15} />
-          {TYPE_LABELS[p.type] ?? p.type}
-        </span>
-        <span className="source-pill">{sourceConfidenceLabel(p.source_confidence)}</span>
-        {p.candidate_status && <span className="candidate-warning-pill">Not final</span>}
+        <span className={`infra-type-pill ${p.type}`}><TypeIcon type={p.type} size={15} />{TYPE_LABELS[p.type] ?? p.type}</span>
+        <span className="source-pill">{evidenceLabel(p.source_confidence)}</span>
       </div>
       <h3>{p.name}</h3>
       <div className="detail-list compact">
-        <div className="detail-row quiet"><span className="detail-label">Subtype</span><span className="detail-value">{p.subtype}</span></div>
-        <div className="detail-row quiet"><span className="detail-label">Address / area</span><span className="detail-value">{p.address}</span></div>
+        <div className="detail-row quiet"><span className="detail-label">Type</span><span className="detail-value">{String(p.subtype ?? '').replaceAll('_', ' ')}</span></div>
+        <div className="detail-row quiet"><span className="detail-label">Area</span><span className="detail-value">{p.address}</span></div>
         <div className="detail-row quiet"><span className="detail-label">Source</span><span className="detail-value">{p.source_name}</span></div>
-        <div className="detail-row quiet"><span className="detail-label">Verification</span><span className="detail-value">{p.verification_status}</span></div>
-        {p.coordinate_status && <div className="detail-row quiet"><span className="detail-label">Coordinate status</span><span className="detail-value">{p.coordinate_status}</span></div>}
-        {p.mobility_role && <div className="detail-row quiet"><span className="detail-label">Possible mobility role</span><span className="detail-value">{p.mobility_role}</span></div>}
       </div>
-      <p className={`panel-note ${p.candidate_status ? 'candidate-note' : ''}`}>{p.notes}</p>
+      <p className="panel-note">{facilityNote(p)}</p>
     </aside>
   );
 }
 
-export default function InfrastructureLandscape({ wardsGeojson, blocksGeojson, infrastructureGeojson, nearestInfrastructure, petrolCandidatesGeojson, petrolCandidates }) {
+export default function InfrastructureLandscape({ wardsGeojson, blocksGeojson, infrastructureGeojson }) {
   const [selectedFacility, setSelectedFacility] = useState(null);
-  const counts = useMemo(() => getInfraCounts(infrastructureGeojson, petrolCandidatesGeojson), [infrastructureGeojson, petrolCandidatesGeojson]);
-  const distanceRows = useMemo(() => nearestSummaryRows(nearestInfrastructure), [nearestInfrastructure]);
+  const visibleInfrastructure = useMemo(() => publicInfrastructure(infrastructureGeojson), [infrastructureGeojson]);
+  const counts = useMemo(() => getInfraCounts(visibleInfrastructure), [visibleInfrastructure]);
 
   return (
     <section className="section" id="infrastructure">
-      <SectionHeader kicker="Access landscape" title="Infrastructure, mobility nodes, and everyday access">
-        This section asks what surrounds the surveyed blocks. It places schools, clinics,
-        police, transport anchors, and border infrastructure beside the survey geography so the team
-        can begin reading everyday access as part of Musina's mobility landscape.
+      <SectionHeader kicker="Service context" title="Institutional and mobility anchors sit within the same geography people move through">
+        This layer places selected institutional anchors beside the survey geography. It provides spatial context; it is not a complete service inventory and it should not be read as a measure of effective access.
       </SectionHeader>
 
-      <div className="atlas-privacy-banner infrastructure-banner">
-        <Fuel size={18} />
-        <p>
-          <strong>Petrol-station note:</strong> fuel points are shown as temporary candidates because
-          fieldwork suggests that petrol stations may also work as transport and waiting nodes. They
-          still need team confirmation before we treat them as final mobility infrastructure.
-        </p>
-      </div>
-
-      <div className="infrastructure-summary-grid">
+      <div className="infrastructure-summary-grid infrastructure-summary-grid--final">
         {TYPE_ORDER.map((type) => (
           <div className="infra-count-card" key={type}>
             <span className={`infra-count-icon ${type}`}><TypeIcon type={type} size={18} /></span>
@@ -162,50 +114,30 @@ export default function InfrastructureLandscape({ wardsGeojson, blocksGeojson, i
         <InfrastructureMap
           wardsGeojson={wardsGeojson}
           blocksGeojson={blocksGeojson}
-          infrastructureGeojson={infrastructureGeojson}
-          petrolCandidatesGeojson={petrolCandidatesGeojson}
+          infrastructureGeojson={visibleInfrastructure}
           selectedFacility={selectedFacility}
           onSelectFacility={setSelectedFacility}
         />
         <FacilityPanel selectedFacility={selectedFacility} />
       </div>
 
-
-      <div className="candidate-review-card">
+      <div className="access-principle-card">
         <div>
-          <p className="map-kicker">Verification queue</p>
-          <h3>Petrol and fuel points are temporary candidates</h3>
-          <p>
-            These points are included for review. The team can confirm whether they are active,
-            correctly located, and meaningful as transport or waiting points.
-          </p>
+          <p className="map-kicker">Method discipline</p>
+          <h3>Near is not the same as accessible.</h3>
+          <p>GIS can measure one honest mechanism: spatial separation from an eligible facility class. Effective access also depends on whether people need, seek, reach, enter and continue care.</p>
         </div>
-        <div className="candidate-list">
-          {(petrolCandidates ?? []).map((candidate) => (
-            <span key={candidate.infra_id}>{candidate.name}</span>
+        <div className="access-chain" aria-label="Access chain">
+          {['need', 'seek', 'reach', 'enter', 'continue'].map((step, index) => (
+            <span key={step}>{step}{index < 4 && <i>→</i>}</span>
           ))}
         </div>
       </div>
 
-      <div className="distance-card-grid">
-        {distanceRows.map((row) => (
-          <article className="distance-card" key={row.label}>
-            <p className="distance-label">Nearest {row.label}</p>
-            <div className="distance-values">
-              <span><strong>{formatDistance(row.min)}</strong><small>closest block</small></span>
-              <span><strong>{formatDistance(row.median)}</strong><small>median block</small></span>
-              <span><strong>{formatDistance(row.max)}</strong><small>furthest block</small></span>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      <div className="method-callout">
+      <div className="method-callout health-proximity-note">
         <Route size={18} />
         <p>
-          Distances are straight-line distances from block anchors to the nearest verified/contextual point in each
-          infrastructure category. They help us start asking access questions. They are not walking time,
-          travel cost, route safety, service quality, or proof that people actually use a facility.
+          Health proximity should be calculated against <strong>fixed public PHC clinics</strong> as a distinct facility class. Hospital and mobile-service geographies are analytically separate. This service-context map therefore does not convert these points into a generic “nearest health facility” access measure.
         </p>
       </div>
     </section>
