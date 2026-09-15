@@ -1,0 +1,390 @@
+/* Final survey-atlas polish. Imported only by survey.jsx. */
+
+/* ---------- Shared map treatment ---------- */
+.survey-map-frame {
+  background: #eee9df;
+}
+
+.survey-map-frame .maplibregl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid rgba(17, 24, 22, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 250, 241, 0.92);
+  box-shadow: 0 10px 28px rgba(18, 24, 21, 0.12);
+}
+
+.survey-map-frame .maplibregl-ctrl-group button {
+  width: 34px;
+  height: 34px;
+}
+
+.survey-map-frame .maplibregl-ctrl-attrib {
+  max-width: 250px;
+  padding: 3px 7px;
+  border-radius: 8px 0 0 0;
+  color: rgba(34, 38, 34, 0.55);
+  background: rgba(255, 250, 241, 0.88);
+  font-size: 9px;
+  line-height: 1.25;
+}
+
+.survey-map-frame .maplibregl-ctrl-attrib a {
+  color: rgba(34, 38, 34, 0.72);
+}
+
+/* ---------- Regional: actual geography ---------- */
+.regional-geo-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(340px, 0.62fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.regional-geography-card {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 250, 241, 0.065);
+  box-shadow: var(--shadow-card);
+}
+
+.regional-card-header--geo {
+  padding: 20px 22px 14px;
+}
+
+.regional-card-header--geo h3 {
+  margin: 2px 0 0;
+  font-size: clamp(1.5rem, 2.3vw, 2.35rem);
+  letter-spacing: -0.04em;
+}
+
+.regional-mode-toggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(255, 250, 241, 0.14);
+  border-radius: 999px;
+  background: rgba(17, 24, 22, 0.4);
+}
+
+.regional-mode-toggle button {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 999px;
+  color: rgba(255, 250, 241, 0.66);
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 850;
+}
+
+.regional-mode-toggle button.is-active {
+  color: #17201d;
+  background: var(--gemms-gold);
+}
+
+.regional-geo-map {
+  height: 610px;
+  min-height: 610px;
+  background: #f2eee5;
+}
+
+.regional-country-marker,
+.regional-musina-label {
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translateZ(0);
+}
+
+.regional-country-marker {
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  padding: 5px 7px;
+  border: 1px solid rgba(17, 24, 22, 0.12);
+  border-radius: 9px;
+  color: #222622;
+  background: rgba(255, 250, 241, 0.82);
+  box-shadow: 0 7px 18px rgba(17, 24, 22, 0.08);
+  backdrop-filter: blur(5px);
+}
+
+.regional-country-marker strong {
+  font-size: 0.72rem;
+  line-height: 1;
+}
+
+.regional-country-marker span {
+  color: #258a72;
+  font-size: 0.66rem;
+  font-weight: 900;
+}
+
+.regional-country-marker.is-major {
+  padding: 6px 8px;
+  border-color: rgba(37, 138, 114, 0.32);
+}
+
+.regional-country-marker.is-major strong {
+  font-size: 0.8rem;
+}
+
+.regional-musina-label {
+  display: grid;
+  gap: 1px;
+  padding: 5px 8px;
+  border-radius: 9px;
+  color: #222622;
+  background: rgba(255, 193, 81, 0.94);
+  box-shadow: 0 8px 22px rgba(17, 24, 22, 0.13);
+}
+
+.regional-musina-label strong {
+  font-size: 0.75rem;
+}
+
+.regional-musina-label span {
+  font-size: 0.6rem;
+  opacity: 0.72;
+}
+
+.regional-scale-legend {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 22px 4px;
+  color: rgba(255, 250, 241, 0.56);
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.regional-scale-legend i {
+  width: 150px;
+  height: 7px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #eee9df, #9bcbbd, #258a72);
+}
+
+.regional-geography-card .regional-note {
+  position: static;
+  margin: 10px 20px 20px;
+}
+
+.regional-briefing-card--geo {
+  height: 100%;
+}
+
+/* ---------- Infrastructure: final public framing ---------- */
+.infrastructure-summary-grid--final {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.access-principle-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(420px, 0.85fr);
+  gap: 28px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 28px;
+  border: 1px solid rgba(255, 193, 81, 0.22);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 193, 81, 0.11), transparent 24rem),
+    rgba(255, 250, 241, 0.06);
+}
+
+.access-principle-card h3 {
+  margin: 4px 0 8px;
+  font-size: clamp(1.65rem, 2.5vw, 2.55rem);
+  letter-spacing: -0.045em;
+}
+
+.access-principle-card p {
+  margin: 0;
+  max-width: 720px;
+  color: var(--text-muted);
+  line-height: 1.62;
+}
+
+.access-chain {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.access-chain span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 250, 241, 0.14);
+  border-radius: 999px;
+  color: rgba(255, 250, 241, 0.85);
+  background: rgba(17, 24, 22, 0.38);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.access-chain span i {
+  color: var(--gemms-gold);
+  font-style: normal;
+}
+
+.health-proximity-note {
+  margin-top: 14px;
+}
+
+/* ---------- Resource ecology / mappability ---------- */
+.resource-summary-grid--mappability {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mappability-card {
+  margin-top: 18px;
+  padding: 27px;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 250, 241, 0.06);
+  box-shadow: var(--shadow-card);
+}
+
+.mappability-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(340px, 1.15fr);
+  gap: 28px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.mappability-heading h3 {
+  margin: 4px 0 0;
+  font-size: clamp(1.55rem, 2.3vw, 2.4rem);
+  line-height: 1.03;
+  letter-spacing: -0.045em;
+}
+
+.mappability-heading > p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.mappability-list {
+  display: grid;
+  gap: 12px;
+}
+
+.mappability-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 260px) minmax(120px, 1fr) 62px;
+  gap: 13px;
+  align-items: center;
+  color: rgba(255, 250, 241, 0.76);
+  font-size: 0.82rem;
+}
+
+.mappability-row > span {
+  font-weight: 760;
+}
+
+.mappability-row > strong {
+  text-align: right;
+  color: var(--gemms-gold);
+  font-size: 0.82rem;
+}
+
+.mappability-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 250, 241, 0.09);
+}
+
+.mappability-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #3d6e54, #258a72);
+}
+
+/* ---------- General public polish ---------- */
+.side-panel .count-band-card {
+  margin-bottom: 12px;
+}
+
+.infrastructure-panel .detail-value,
+.resources-panel .detail-value {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1120px) {
+  .regional-geo-layout,
+  .access-principle-card,
+  .mappability-heading {
+    grid-template-columns: 1fr;
+  }
+
+  .regional-geo-map {
+    height: 560px;
+    min-height: 560px;
+  }
+
+  .infrastructure-summary-grid--final {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .access-chain {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .regional-card-header--geo {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .regional-mode-toggle {
+    width: 100%;
+  }
+
+  .regional-mode-toggle button {
+    flex: 1;
+  }
+
+  .regional-geo-map {
+    height: 500px;
+    min-height: 500px;
+  }
+
+  .regional-country-marker {
+    padding: 4px 5px;
+  }
+
+  .regional-country-marker strong {
+    font-size: 0.62rem;
+  }
+
+  .regional-country-marker span {
+    font-size: 0.58rem;
+  }
+
+  .infrastructure-summary-grid--final,
+  .resource-summary-grid--mappability {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mappability-row {
+    grid-template-columns: 1fr 54px;
+    gap: 7px 10px;
+  }
+
+  .mappability-track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}

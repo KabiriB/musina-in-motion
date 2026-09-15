@@ -3,49 +3,26 @@ import SectionHeader from './SectionHeader.jsx';
 export default function MethodsNote({ metadata }) {
   return (
     <section className="section" id="methods">
-      <SectionHeader kicker="Data honesty" title="What this interface can and cannot claim">
-        This page keeps the story honest. The interface is designed to help the team read
-        patterns, not to expose people, overclaim certainty, or turn fieldwork data into a census map.
+      <SectionHeader kicker="Evidence and privacy" title="How to read the atlas">
+        The atlas is designed to make spatial patterns legible without turning a research sample into a census map, a service point into an access claim, or a narrated journey into a GPS trace.
       </SectionHeader>
       <div className="methods-card">
         <div>
-          <h3>How this build should be read</h3>
+          <h3>Evidence base</h3>
           <p>
-            Base analyzable sample: <strong>{metadata?.base_analyzable_n ?? 629}</strong>. Raw rows in
-            the cleaned file: <strong>{metadata?.raw_rows_in_cleaned_file ?? 630}</strong>. Block
-            anchors: <strong>{metadata?.block_anchor_n ?? 16}</strong>. Selected wards:{' '}
-            <strong>{metadata?.ward_n ?? 6}</strong>.
+            The spatial summaries use <strong>{metadata?.base_analyzable_n ?? 629}</strong> analysable survey observations across{' '}
+            <strong>{metadata?.block_anchor_n ?? 16}</strong> survey block anchors in <strong>{metadata?.ward_n ?? 6}</strong> selected wards.
           </p>
         </div>
         <div>
           <ul>
-            <li>
-              Ward outlines come from the official municipal ward layer. The active ward file is the
-              QA-patched v3 layer checked against the raw survey summaries.
-            </li>
-            <li>
-              Survey records are linked to fieldwork blocks using the cleaned cluster variable and the
-              corrected block-coordinate file.
-            </li>
-            <li>
-              Block points are fieldwork anchors. They are not household locations.
-            </li>
-            <li>
-              Ward 3 TS block anchors are retained as Ward 3 according to the sampling design, even
-              though their coordinate anchors are flagged internally against the GIS ward join.
-            </li>
-            <li>
-              Small counts are suppressed or shown as broad count bands. Sensitive indicators stay at
-              safer levels of aggregation.
-            </li>
-            <li>
-              The participatory resources layer shows places named in workshop mapping. It is local
-              knowledge data, not an independently verified infrastructure register.
-            </li>
-            <li>
-              The interface shows patterns among surveyed participants in selected wards and blocks.
-              It does not claim to map every migrant, every route, or every resource in Musina.
-            </li>
+            <li>Regional birthplace and recent-origin maps use actual country geometries and aggregated country-level shares. They are not individual route maps.</li>
+            <li>Ward outlines provide the administrative geography used for the Musina study area; block points are broad fieldwork anchors, not household locations.</li>
+            <li>Small counts and sensitive combinations are suppressed or shown only at safer levels of aggregation.</li>
+            <li>Infrastructure points provide service context. Proximity to a mapped facility does not establish service use, travel time, affordability, safety, quality or effective access.</li>
+            <li>Health proximity should be defined against an eligible facility class. Fixed public PHC, hospital and mobile-service geographies should not be collapsed into one generic “nearest health facility” measure.</li>
+            <li>The participatory resource layer records places named through workshop mapping. The difference between named and mapped resources is itself evidence about what GIS can and cannot stabilise as points.</li>
+            <li>The atlas describes patterns among participants in the selected study geography. It does not claim to map every migrant, journey, service or resource in Musina.</li>
           </ul>
         </div>
       </div>

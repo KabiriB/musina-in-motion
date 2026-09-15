@@ -1,215 +1,255 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
+import { MAP_STYLES } from '../config/mapStyle.js';
 
 const roleLabels = {
   origin: 'Origin',
   transit: 'Transit / stop',
-  border: 'Border / crossing',
-  work: 'Work',
-  arrival: 'Arrival',
+  border: 'Border crossing',
+  work: 'Work / preparation',
+  arrival: 'First arrival',
+  return: 'Return',
   settlement: 'Settlement',
 };
 
-const BASEMAPS = {
-  streets: {
-    label: 'Streets',
-    layerId: 'journey-basemap-streets',
-  },
-  atlas: {
-    label: 'Atlas',
-    layerId: 'journey-basemap-atlas',
-  },
-  dark: {
-    label: 'Dark',
-    layerId: 'journey-basemap-dark',
-  },
-};
+const emptyCollection = () => ({ type: 'FeatureCollection', features: [] });
 
-const baseMapStyle = {
-  version: 8,
-  sources: {
-    journeyOsm: {
-      type: 'raster',
-      tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap contributors',
-    },
-    journeyCartoVoyager: {
-      type: 'raster',
-      tiles: ['https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-    },
-    journeyCartoDark: {
-      type: 'raster',
-      tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-    },
-  },
-  layers: [
-    {
-      id: 'journey-basemap-streets',
-      type: 'raster',
-      source: 'journeyOsm',
-      layout: { visibility: 'visible' },
-      paint: {
-        'raster-opacity': 0.96,
-        'raster-saturation': -0.18,
-        'raster-contrast': -0.04,
-        'raster-brightness-max': 0.96,
-      },
-    },
-    {
-      id: 'journey-basemap-atlas',
-      type: 'raster',
-      source: 'journeyCartoVoyager',
-      layout: { visibility: 'none' },
-      paint: {
-        'raster-opacity': 0.96,
-        'raster-saturation': -0.22,
-        'raster-contrast': -0.04,
-        'raster-brightness-max': 0.96,
-      },
-    },
-    {
-      id: 'journey-basemap-dark',
-      type: 'raster',
-      source: 'journeyCartoDark',
-      layout: { visibility: 'none' },
-      paint: {
-        'raster-opacity': 0.94,
-        'raster-saturation': -0.08,
-        'raster-contrast': 0.04,
-      },
-    },
-  ],
-};
-
-function emptyRouteGeojson() {
+function lineFeature(coordinates, properties = {}) {
+  if (!coordinates || coordinates.length < 2) return null;
   return {
-    type: 'FeatureCollection',
-    features: [],
+    type: 'Feature',
+    properties,
+    geometry: { type: 'LineString', coordinates },
   };
 }
 
-function routeGeojson(story) {
+function storyCoordinates(story) {
+  return story?.stops?.map((stop) => [stop.longitude, stop.latitude]) ?? [];
+}
+
+function selectedRouteData(story) {
+  const feature = lineFeature(storyCoordinates(story), { name: story?.name ?? '' });
+  return { type: 'FeatureCollection', features: feature ? [feature] : [] };
+}
+
+function completedRouteData(story, activeStopOrder) {
+  if (!story || !activeStopOrder) return emptyCollection();
+  const completed = story.stops
+    .filter((stop) => stop.order <= activeStopOrder)
+    .map((stop) => [stop.longitude, stop.latitude]);
+  const feature = lineFeature(completed, { name: story.name });
+  return { type: 'FeatureCollection', features: feature ? [feature] : [] };
+}
+
+function activeLegRouteData(story, activeStopOrder) {
+  if (!story || !activeStopOrder || activeStopOrder <= 1) return emptyCollection();
+  const activeIndex = story.stops.findIndex((stop) => stop.order === activeStopOrder);
+  if (activeIndex <= 0) return emptyCollection();
+  const previous = story.stops[activeIndex - 1];
+  const current = story.stops[activeIndex];
+  const feature = lineFeature(
+    [[previous.longitude, previous.latitude], [current.longitude, current.latitude]],
+    { name: story.name, leg: activeStopOrder },
+  );
+  return { type: 'FeatureCollection', features: feature ? [feature] : [] };
+}
+
+function intendedRouteData(story, activeStopOrder) {
+  const intended = story?.intendedDestination;
+  if (!intended || !activeStopOrder || activeStopOrder < intended.fromStopOrder) return emptyCollection();
+  const from = story.stops.find((stop) => stop.order === intended.fromStopOrder);
+  if (!from) return emptyCollection();
+  const feature = lineFeature(
+    [[from.longitude, from.latitude], [intended.longitude, intended.latitude]],
+    { name: intended.name, kind: 'intended' },
+  );
+  return { type: 'FeatureCollection', features: feature ? [feature] : [] };
+}
+
+function overviewRouteData(stories) {
   return {
     type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        properties: {
-          status: story.status,
-          id: story.id,
-        },
-        geometry: {
-          type: 'LineString',
-          coordinates: story.stops.map((stop) => [stop.longitude, stop.latitude]),
-        },
-      },
-    ],
+    features: stories
+      .map((story) => lineFeature(storyCoordinates(story), { name: story.name, sourceId: story.sourceId }))
+      .filter(Boolean),
   };
 }
 
-function addRouteLayers(map) {
-  if (map.getSource('journey-route')) return;
+function setSourceData(map, sourceId, data) {
+  try {
+    map.getSource(sourceId)?.setData?.(data);
+  } catch {
+    // Rendering will retry on the next state update.
+  }
+}
 
-  map.addSource('journey-route', {
-    type: 'geojson',
-    data: emptyRouteGeojson(),
-  });
+function addJourneyLayers(map) {
+  if (map.getSource('journey-overview')) return;
 
+  map.addSource('journey-overview', { type: 'geojson', data: emptyCollection() });
   map.addLayer({
-    id: 'journey-route-shadow',
+    id: 'journey-overview-shadow',
     type: 'line',
-    source: 'journey-route',
+    source: 'journey-overview',
     paint: {
-      'line-color': '#111816',
-      'line-width': 8,
-      'line-opacity': 0.34,
+      'line-color': '#0d1815',
+      'line-width': 4.5,
+      'line-opacity': 0.16,
       'line-blur': 1.2,
     },
   });
-
   map.addLayer({
-    id: 'journey-route-solid',
+    id: 'journey-overview-lines',
     type: 'line',
-    source: 'journey-route',
-    filter: ['==', ['get', 'status'], 'full narrative'],
+    source: 'journey-overview',
     paint: {
-      'line-color': '#ffc151',
-      'line-width': 4.5,
-      'line-opacity': 0.96,
+      'line-color': '#b98234',
+      'line-width': 2.1,
+      'line-opacity': 0.34,
     },
-    layout: {
-      'line-cap': 'round',
-      'line-join': 'round',
-    },
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
   });
 
+  map.addSource('journey-selected', { type: 'geojson', data: emptyCollection() });
   map.addLayer({
-    id: 'journey-route-sketch',
+    id: 'journey-selected-shadow',
     type: 'line',
-    source: 'journey-route',
-    filter: ['==', ['get', 'status'], 'route sketch'],
+    source: 'journey-selected',
     paint: {
-      'line-color': '#ffc151',
-      'line-width': 4.5,
-      'line-opacity': 0.94,
-      'line-dasharray': [2.1, 1.8],
-    },
-    layout: {
-      'line-cap': 'round',
-      'line-join': 'round',
+      'line-color': '#0f1714',
+      'line-width': 10,
+      'line-opacity': 0.24,
+      'line-blur': 1.4,
     },
   });
+  map.addLayer({
+    id: 'journey-selected-line',
+    type: 'line',
+    source: 'journey-selected',
+    paint: {
+      'line-color': '#6f6657',
+      'line-width': 4.2,
+      'line-opacity': 0.64,
+    },
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
+  });
+
+  map.addSource('journey-completed', { type: 'geojson', data: emptyCollection() });
+  map.addLayer({
+    id: 'journey-completed-line',
+    type: 'line',
+    source: 'journey-completed',
+    paint: {
+      'line-color': '#258a72',
+      'line-width': 4.6,
+      'line-opacity': 0.82,
+    },
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
+  });
+
+  map.addSource('journey-active-leg', { type: 'geojson', data: emptyCollection() });
+  map.addLayer({
+    id: 'journey-active-leg-glow',
+    type: 'line',
+    source: 'journey-active-leg',
+    paint: {
+      'line-color': '#ffc151',
+      'line-width': 11,
+      'line-opacity': 0.18,
+      'line-blur': 2.4,
+    },
+  });
+  map.addLayer({
+    id: 'journey-active-leg-line',
+    type: 'line',
+    source: 'journey-active-leg',
+    paint: {
+      'line-color': '#d9972e',
+      'line-width': 5.6,
+      'line-opacity': 0.98,
+    },
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
+  });
+
+  map.addSource('journey-intended', { type: 'geojson', data: emptyCollection() });
+  map.addLayer({
+    id: 'journey-intended-line',
+    type: 'line',
+    source: 'journey-intended',
+    paint: {
+      'line-color': '#258a72',
+      'line-width': 3.2,
+      'line-opacity': 0.8,
+      'line-dasharray': [2, 2.1],
+    },
+    layout: { 'line-cap': 'round', 'line-join': 'round' },
+  });
+}
+
+function duplicateMarkerOffset(story, stop) {
+  const key = `${stop.longitude.toFixed(5)}:${stop.latitude.toFixed(5)}`;
+  const duplicates = story.stops.filter(
+    (candidate) => `${candidate.longitude.toFixed(5)}:${candidate.latitude.toFixed(5)}` === key,
+  );
+  if (duplicates.length < 2) return [0, 0];
+  const index = duplicates.findIndex((candidate) => candidate.order === stop.order);
+  const offsets = [[-13, -9], [13, 9], [-13, 11], [13, -11]];
+  return offsets[index] ?? [0, 0];
+}
+
+function markerNode(stop, active) {
+  const el = document.createElement('button');
+  el.type = 'button';
+  el.className = `journey-marker journey-marker--${stop.role}${active ? ' is-active' : ''}`;
+  el.textContent = String(stop.order);
+  el.setAttribute('aria-label', `${stop.order}. ${stop.name}: ${stop.label ?? roleLabels[stop.role] ?? stop.role}`);
+  return el;
 }
 
 function popupNode(stop) {
   const wrap = document.createElement('div');
   wrap.className = 'journey-popup-card';
 
+  const kicker = document.createElement('span');
+  kicker.textContent = stop.label ?? roleLabels[stop.role] ?? stop.role;
+
   const title = document.createElement('strong');
   title.textContent = `${stop.order}. ${stop.name}`;
 
-  const role = document.createElement('span');
-  role.textContent = roleLabels[stop.type] ?? stop.type;
+  const cue = document.createElement('p');
+  cue.textContent = 'Scroll the narrative to follow this stop in sequence.';
 
-  const copy = document.createElement('p');
-  copy.textContent = stop.narrative;
-
-  wrap.append(title, role, copy);
+  wrap.append(kicker, title, cue);
   return wrap;
 }
 
-function markerNode(stop) {
-  const element = document.createElement('button');
-  element.type = 'button';
-  element.className = `journey-marker journey-marker--${stop.type}`;
-  element.textContent = String(stop.order);
-  element.setAttribute('aria-label', `${stop.order}. ${stop.name}`);
-  return element;
+function boundsForStories(stories, includeIntended = true) {
+  const bounds = new maplibregl.LngLatBounds();
+  stories.forEach((story) => {
+    story.stops.forEach((stop) => bounds.extend([stop.longitude, stop.latitude]));
+    if (includeIntended && story.intendedDestination) {
+      bounds.extend([story.intendedDestination.longitude, story.intendedDestination.latitude]);
+    }
+  });
+  return bounds;
 }
 
-export default function JourneyMap({ story, activeStopOrder, onStopSelect }) {
+export default function JourneyMap({ stories, story, activeStopOrder, onStopSelect }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
   const markersRef = useRef([]);
-  const storyRef = useRef(story);
-  const onStopSelectRef = useRef(onStopSelect);
   const loadedRef = useRef(false);
-  const [activeBasemap, setActiveBasemap] = useState('streets');
-  const [mapIssue, setMapIssue] = useState(false);
+  const onStopSelectRef = useRef(onStopSelect);
 
-  const statusClass = useMemo(
-    () => `journey-status--${story.status.replaceAll(' ', '-')}`,
-    [story.status],
+  const overview = !story;
+  const mapTitle = overview ? 'Ten journeys into and around Musina' : story.title;
+  const mapSubtitle = overview ? 'Select a name to enter one journey.' : story.routeLabel;
+  const mapTitleClass = mapTitle.length >= 32 ? ' is-long-title' : '';
+
+  const activeStop = useMemo(
+    () => story?.stops.find((stop) => stop.order === activeStopOrder) ?? null,
+    [story, activeStopOrder],
   );
-
-  useEffect(() => {
-    storyRef.current = story;
-  }, [story]);
 
   useEffect(() => {
     onStopSelectRef.current = onStopSelect;
@@ -220,13 +260,14 @@ export default function JourneyMap({ story, activeStopOrder, onStopSelect }) {
 
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: baseMapStyle,
-      center: [29.8, -21.8],
-      zoom: 4.2,
-      minZoom: 2.5,
-      maxZoom: 17,
+      style: MAP_STYLES.journey,
+      center: [27.8, -20.3],
+      zoom: 3.5,
+      minZoom: 2.2,
+      maxZoom: 14,
       attributionControl: false,
-      fadeDuration: 0,
+      pitchWithRotate: false,
+      dragRotate: false,
     });
 
     mapRef.current = map;
@@ -235,50 +276,25 @@ export default function JourneyMap({ story, activeStopOrder, onStopSelect }) {
       map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-right');
       map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
     } catch {
-      // Controls are useful, but map rendering should never depend on them.
+      // Controls are optional; map rendering is not.
     }
-
-    map.on('error', (event) => {
-      const message = String(event?.error?.message ?? '');
-      if (/tile|image|network|fetch/i.test(message)) setMapIssue(true);
-    });
 
     map.once('load', () => {
       loadedRef.current = true;
-      addRouteLayers(map);
-      setMapIssue(false);
+      addJourneyLayers(map);
     });
 
-    let resizeFrame = 0;
-    const resizeMap = () => {
-      cancelAnimationFrame(resizeFrame);
-      resizeFrame = requestAnimationFrame(() => {
-        try {
-          map.resize();
-        } catch {
-          // no-op during teardown
-        }
-      });
-    };
-
-    const resizeObserver = new ResizeObserver(resizeMap);
-    resizeObserver.observe(containerRef.current);
-    window.addEventListener('resize', resizeMap);
+    const observer = new ResizeObserver(() => {
+      try { map.resize(); } catch { /* no-op during teardown */ }
+    });
+    observer.observe(containerRef.current);
 
     return () => {
-      cancelAnimationFrame(resizeFrame);
-      resizeObserver.disconnect();
-      window.removeEventListener('resize', resizeMap);
+      observer.disconnect();
       markersRef.current.forEach(({ marker }) => marker.remove());
       markersRef.current = [];
       loadedRef.current = false;
-
-      try {
-        map.remove();
-      } catch {
-        // Safe no-op during development refreshes.
-      }
-
+      try { map.remove(); } catch { /* safe during hot reload */ }
       mapRef.current = null;
     };
   }, []);
@@ -287,136 +303,157 @@ export default function JourneyMap({ story, activeStopOrder, onStopSelect }) {
     const map = mapRef.current;
     if (!map) return undefined;
 
-    const renderStory = () => {
-      if (!map.getSource('journey-route')) addRouteLayers(map);
-
-      const source = map.getSource('journey-route');
-      source?.setData?.(routeGeojson(story));
+    const render = () => {
+      if (!map.getSource('journey-overview')) addJourneyLayers(map);
 
       markersRef.current.forEach(({ marker }) => marker.remove());
       markersRef.current = [];
 
+      if (overview) {
+        setSourceData(map, 'journey-overview', overviewRouteData(stories));
+        setSourceData(map, 'journey-selected', emptyCollection());
+        setSourceData(map, 'journey-completed', emptyCollection());
+        setSourceData(map, 'journey-active-leg', emptyCollection());
+        setSourceData(map, 'journey-intended', emptyCollection());
+
+        const bounds = boundsForStories(stories);
+        if (!bounds.isEmpty()) {
+          map.fitBounds(bounds, {
+            padding: { top: 90, right: 70, bottom: 70, left: 70 },
+            maxZoom: 4.4,
+            duration: 900,
+          });
+        }
+        return;
+      }
+
+      setSourceData(map, 'journey-overview', emptyCollection());
+      setSourceData(map, 'journey-selected', selectedRouteData(story));
+      setSourceData(map, 'journey-completed', completedRouteData(story, activeStopOrder));
+      setSourceData(map, 'journey-active-leg', activeLegRouteData(story, activeStopOrder));
+      setSourceData(map, 'journey-intended', intendedRouteData(story, activeStopOrder));
+
       story.stops.forEach((stop) => {
-        const element = markerNode(stop);
+        const element = markerNode(stop, stop.order === activeStopOrder);
+        element.addEventListener('click', () => onStopSelectRef.current?.(stop.order));
+
         const popup = new maplibregl.Popup({
           closeButton: false,
           closeOnClick: true,
           offset: 22,
           className: 'journey-map-popup',
-          maxWidth: '360px',
+          maxWidth: '280px',
         }).setDOMContent(popupNode(stop));
-
-        element.addEventListener('click', () => {
-          onStopSelectRef.current?.(stop.order);
-        });
 
         const marker = new maplibregl.Marker({
           element,
           anchor: 'center',
+          offset: duplicateMarkerOffset(story, stop),
         })
           .setLngLat([stop.longitude, stop.latitude])
           .setPopup(popup)
           .addTo(map);
 
-        markersRef.current.push({ order: stop.order, marker, element, popup });
+        markersRef.current.push({ order: stop.order, marker, element });
       });
 
-      const bounds = new maplibregl.LngLatBounds();
-      story.stops.forEach((stop) => bounds.extend([stop.longitude, stop.latitude]));
+      if (story.intendedDestination) {
+        const intended = story.intendedDestination;
+        const element = document.createElement('div');
+        element.className = 'journey-intended-marker';
+        element.setAttribute('aria-label', intended.label);
+        const popup = new maplibregl.Popup({ closeButton: false, offset: 18, className: 'journey-map-popup' })
+          .setHTML(`<div class="journey-popup-card"><span>${intended.label}</span><strong>${intended.name}</strong><p>${intended.narrative}</p></div>`);
+        const marker = new maplibregl.Marker({ element, anchor: 'center' })
+          .setLngLat([intended.longitude, intended.latitude])
+          .setPopup(popup)
+          .addTo(map);
+        markersRef.current.push({ order: 'intended', marker, element });
+      }
 
+      const bounds = boundsForStories([story], false);
       if (!bounds.isEmpty()) {
-        try {
-          map.resize();
-          map.fitBounds(bounds, {
-            padding: { top: 105, right: 84, bottom: 76, left: 84 },
-            maxZoom: 9.2,
-            duration: 650,
-          });
-        } catch {
-          // Keep the current map view if fitBounds cannot run during a hot reload.
-        }
+        map.fitBounds(bounds, {
+          padding: { top: 110, right: 86, bottom: 84, left: 86 },
+          maxZoom: 7.2,
+          duration: 800,
+        });
       }
     };
 
-    if (loadedRef.current && map.isStyleLoaded()) {
-      renderStory();
-      return undefined;
-    }
+    if (loadedRef.current && map.isStyleLoaded()) render();
+    else map.once('load', render);
 
-    map.once('load', renderStory);
     return () => {
-      try {
-        map.off('load', renderStory);
-      } catch {
-        // no-op
-      }
+      try { map.off('load', render); } catch { /* no-op */ }
     };
-  }, [story]);
+  }, [stories, story, overview]);
 
   useEffect(() => {
-    markersRef.current.forEach(({ order, marker, element }) => {
-      const isActive = order === activeStopOrder;
-      element.classList.toggle('is-active', isActive);
-
-      if (isActive && !marker.getPopup()?.isOpen()) {
-        marker.togglePopup();
-      }
-
-      if (!isActive && marker.getPopup()?.isOpen()) {
-        marker.togglePopup();
-      }
-    });
-  }, [activeStopOrder]);
-
-  const switchBasemap = (key) => {
     const map = mapRef.current;
-    if (!map || !BASEMAPS[key]) return;
+    if (!map || !story) return;
 
-    Object.entries(BASEMAPS).forEach(([candidateKey, item]) => {
-      if (!map.getLayer(item.layerId)) return;
-      map.setLayoutProperty(item.layerId, 'visibility', candidateKey === key ? 'visible' : 'none');
+    setSourceData(map, 'journey-completed', completedRouteData(story, activeStopOrder));
+    setSourceData(map, 'journey-active-leg', activeLegRouteData(story, activeStopOrder));
+    setSourceData(map, 'journey-intended', intendedRouteData(story, activeStopOrder));
+
+    markersRef.current.forEach(({ order, marker, element }) => {
+      if (order === 'intended') {
+        element.classList.toggle(
+          'is-visible',
+          Boolean(story.intendedDestination && activeStopOrder >= story.intendedDestination.fromStopOrder),
+        );
+        return;
+      }
+      const isActive = order === activeStopOrder;
+      const isComplete = typeof order === 'number' && order < activeStopOrder;
+      element.classList.toggle('is-active', isActive);
+      element.classList.toggle('is-complete', isComplete);
+      if (!isActive && marker.getPopup()?.isOpen()) marker.togglePopup();
     });
 
-    setActiveBasemap(key);
-    setMapIssue(false);
-  };
+    if (activeStop) {
+      try {
+        map.easeTo({
+          center: [activeStop.longitude, activeStop.latitude],
+          zoom: 6.55,
+          offset: [typeof window !== 'undefined' && window.innerWidth > 900 ? -150 : 0, 0],
+          duration: 950,
+          essential: true,
+        });
+      } catch {
+        // Keep the route view if animation is unavailable.
+      }
+    }
+  }, [story, activeStopOrder, activeStop]);
+
+  const activeIndex = story
+    ? Math.max(0, story.stops.findIndex((stop) => stop.order === activeStopOrder))
+    : -1;
 
   return (
     <div className="journey-map-shell">
-      <div ref={containerRef} className="journey-map" aria-label={`Map of ${story.title}`} />
+      <div ref={containerRef} className="journey-map" aria-label={mapTitle} />
 
-      <div className="journey-map-overlay">
-        <div>
-          <strong>{story.title}</strong>
-          <span>{story.routeLabel}</span>
-        </div>
-        <span className={`journey-status ${statusClass}`}>
-          {story.status}
-        </span>
+      <div className={`journey-map-overlay${mapTitleClass}`}>
+        <p className="journey-map-kicker">{overview ? 'Journey field' : story.name}</p>
+        <strong>{mapTitle}</strong>
+        <span>{mapSubtitle}</span>
       </div>
 
-      <div className="journey-basemap-switch" aria-label="Basemap options">
-        {Object.entries(BASEMAPS).map(([key, item]) => (
-          <button
-            key={key}
-            type="button"
-            className={activeBasemap === key ? 'is-active' : ''}
-            onClick={() => switchBasemap(key)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="journey-map-note">
-        <strong>Detailed basemap.</strong> Route lines connect named interview-map stops; they are not GPS traces.
-      </div>
-
-      {mapIssue && (
-        <div className="journey-map-warning" role="status">
-          A basemap request failed. Try Atlas or Dark; the route and stop data remain unchanged.
+      {!overview && (
+        <div className="journey-map-progress" aria-label={`Stop ${activeIndex + 1} of ${story.stops.length}`}>
+          <span>{String(activeIndex + 1).padStart(2, '0')}</span>
+          <i><b style={{ width: `${((activeIndex + 1) / story.stops.length) * 100}%` }} /></i>
+          <span>{String(story.stops.length).padStart(2, '0')}</span>
         </div>
       )}
+
+      <div className="journey-map-note">
+        <strong>Interpretive geography.</strong> Named stops use mapped place coordinates from the interview materials. Lines connect narrated places to show sequence; they do not represent an exact road or GPS trace.
+      </div>
+
+      {!overview && activeIndex === 0 && <div className="journey-scroll-cue">Scroll to continue ↓</div>}
     </div>
   );
 }

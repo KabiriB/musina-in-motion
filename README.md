@@ -1,144 +1,90 @@
 # Musina in Motion
 
-A single GitHub Pages-ready Vite/React repository containing two connected research interfaces:
+**Musina in Motion** is the public-facing spatial atlas for the GEMMS Musina study. It combines two analytically distinct views of mobility:
 
-- **Survey Interface** — quantitative/spatial patterns across Musina.
-- **Narrated Journeys** — selected qualitative interview routes read stop by stop.
+- **Survey Atlas** — regional mobility geography, local survey geography, service context, participatory resources and ward-level mobility configurations.
+- **Narrated Journeys** — ten selected in-depth interview accounts read as geographically anchored, interpretive journey sequences.
 
-The repository opens on a landing page that keeps the two analytical modes connected but distinct.
+The atlas is designed to make spatial structure visible without turning a research sample into a census map, a mapped service into an access claim, or an interview journey into a GPS trace.
 
-## v1.2 map-rendering hardening
+## Public pages
 
-The Narrated Journeys map now uses the same **MapLibre GL** rendering engine already used by the main Musina survey interface. This replaces the earlier Leaflet implementation after local QA showed persistent mixed/blocky raster-tile rendering in Chrome on Windows. The route reader still uses detailed online street/atlas basemaps, but story changes now update only the route and markers; they do not repeatedly invalidate/refit the map during tile loading.
+- `index.html` — landing page
+- `survey.html` — Survey Atlas
+- `journeys.html` — Narrated Journeys
 
-The stop-by-stop panel also expands naturally with the page rather than creating a second nested scrollbar.
+## Core production principle
 
-## Pages
+**Survey patterns show distribution. Narrated journeys show sequence. Neither should be made to claim what the other cannot establish.**
 
-- `index.html` — project landing page
-- `survey.html` — main Musina survey/spatial interface
-- `journeys.html` — Narrated Journeys qualitative route reader
+The public architecture follows the project rule:
 
-## Research and governance note
+**RAW → CLEAN → SAFE → PUBLIC**
 
-The survey interface presents aggregate patterns from the QA-checked Musina data spine. It does not show household locations or individual respondent traces.
+Household locations and individual survey records are not exposed in the interface. Survey block points are broad fieldwork anchors. Small counts and sensitive combinations are suppressed or presented only at safer levels of aggregation.
 
-The Narrated Journeys are interpretive journey maps based on selected in-depth interviews. They are not representative statistical claims and they are not individual respondent traces. Place names are used to show broad route geographies; no household-level locations are shown.
+## Narrated Journeys
 
-Route lines connect named stops to make journey sequence legible. They should not be read as exact roads, GPS tracks, or precise movement paths.
+The public reader contains ten pseudonymised journeys:
 
-## Narrated Journeys status
+- Michaela — Buhera → Chivhu → Beitbridge → Musina
+- Wayne — Blantyre → Nyamapanda → Beitbridge → Johannesburg → Musina
+- Munyadziwa — Kakhu → Masea → Makonde → Musina
+- Tatenda — Village near Masvingo → Masvingo → Beitbridge → Musina
+- Rhoda — Gokwe → Bulawayo → Musina → Tzaneen → Musina, with Cape Town shown separately as an intended destination not reached
+- Rudo — Chivi → Beitbridge → Musina
+- Morgan — Kivu → Pretoria West → Durban → Musina
+- Shingi — Mberengwa → Beitbridge → Musina
+- Benjamin — Rumonge → Kigoma → Zambia → Musina
+- Arnold — Masvingo → Beitbridge → Musina
 
-The published reader currently contains nine routes:
+Public-facing names use approved pseudonyms. Internal source identifiers remain in `src/data/journeyStories.js` for provenance and maintenance only.
 
-- MAP159 — route sketch
-- MAP267 — full narrative
-- MAP308 — route sketch
-- MAP434 — route sketch
-- MAP446 — route sketch
-- MAP451 — route sketch
-- MAP514 — route sketch
-- MAP612 — route sketch
-- MAP617 — route sketch
+Journey lines connect named places to make narrative sequence legible. They are not exact roads, GPS tracks or complete records of every movement between stops.
 
-`MAP267` is the only supplied source map that currently contains substantial stop-level interview narration. The other eight published routes preserve route sequences and clearly state that fuller narration still needs to be added.
+## Where to edit content
 
-`MAP460` is also present in Bella's uploaded source-map bundle. It was not part of the previously agreed nine-story reader, so it is flagged in `docs/SOURCE_MAP_AUDIT.md` for team confirmation rather than silently published.
+Routine wording changes should not require map-code changes.
 
-## Editing journey text
+- Shared publication copy: `src/content/siteCopy.js`
+- Journey narratives and stop metadata: `src/data/journeyStories.js`
+- Publication formatting for workshop resource labels: `src/utils/publicationLabels.js`
+- Main survey sections: `src/components/`
 
-Most future qualitative edits should happen in one file:
+Keep technical field names and source-data identifiers stable unless a data rebuild requires changing them.
 
-```text
-src/data/journeyStories.js
-```
+## Data
 
-Each story contains:
+Public-safe survey and spatial assets live in:
 
-```text
-id
-title
-subtitle
-status
-routeLabel
-routeType
-themes
-interpretationNote
-needsNarration
-sourceFile
-stops[]
-  order
-  name
-  type
-  latitude
-  longitude
-  narrative
-```
+`public/data/`
 
-### To update a route sketch
+Do not casually edit privacy-screened data assets. Text, label and narrative maintenance should normally happen in the source files above rather than in the public data files.
 
-1. Open `src/data/journeyStories.js`.
-2. Find the story by ID, for example `MAP159`.
-3. Replace the placeholder `narrative` text for each stop with interview-derived narration.
-4. Review `themes` and `interpretationNote` against the interview.
-5. When the story is genuinely complete, change:
+The participatory resource layer deliberately preserves the distinction between the raw workshop wording and the cleaned publication label shown in the interface. Raw workshop names remain in the data; display corrections happen in `src/utils/publicationLabels.js`.
 
-```js
-status: "route sketch"
-```
+## Mapping stack and external dependency
 
-to:
+The interface uses:
 
-```js
-status: "full narrative"
-```
+- React 18
+- Vite 5
+- MapLibre GL 4.7
+- OpenFreeMap vector styles
+- locally stored GeoJSON/JSON for the project evidence layers
 
-and change:
+The current basemap styles are centralised in one file:
 
-```js
-needsNarration: true
-```
+`src/config/mapStyle.js`
 
-to:
+At publication, the application uses these style endpoints:
 
-```js
-needsNarration: false
-```
+- `https://tiles.openfreemap.org/styles/positron`
+- `https://tiles.openfreemap.org/styles/liberty`
 
-Do not invent missing interview detail simply to make a route feel complete.
+No application API key is stored in the project for these basemaps. If a basemap provider changes its endpoint or access policy in future, update `src/config/mapStyle.js` rather than editing each map component separately.
 
-## Editing survey/interface text
-
-Survey page copy is mainly in:
-
-```text
-src/components/
-src/pages/MainInterface.jsx
-```
-
-The existing QA-checked survey data files remain in:
-
-```text
-public/data/
-```
-
-Do not change the privacy-screened data assets casually. Text changes and narrative changes should normally not require edits to those files.
-
-## Basemap behaviour
-
-Narrated Journeys uses **MapLibre GL 4.7.1**, the same map engine already used by the main survey interface. Detailed online raster basemaps remain available through three in-map choices: Streets, Atlas and Dark.
-
-The hardened implementation includes:
-
-- explicit map height and minimum height
-- one stable map instance for the life of the page
-- `ResizeObserver` calling MapLibre's `resize()` only when the container changes
-- route and marker data updated independently of the basemap
-- a single `fitBounds()` pass when the selected story changes
-- no repeated tile-load invalidation/refit loop
-- basemap request feedback and an immediate alternative-basemap switcher
-
-This specifically addresses the mixed/blocky raster-tile rendering observed in the earlier Leaflet preview on Windows/Chrome.
+The regional birthplace/recent-origin map uses project-bundled Natural Earth country geometry and does not depend on an online basemap.
 
 ## Local development
 
@@ -149,43 +95,48 @@ npm install
 npm run dev
 ```
 
-Vite will open the site locally. Test all three pages:
-
-```text
-/
-/survey.html
-/journeys.html
-```
-
-For a production build:
+Production check:
 
 ```bash
 npm run build
 npm run preview
 ```
 
+Test all three pages:
+
+- `/`
+- `/survey.html`
+- `/journeys.html`
+
 ## GitHub Pages deployment
 
-A deployment workflow is already included at:
+The current repository keeps a prebuilt GitHub Pages copy in `docs/`.
 
-```text
-.github/workflows/deploy.yml
+After source changes have been reviewed:
+
+```bat
+publish_docs.bat
 ```
 
-After pushing the repository to GitHub:
+The script builds the Vite application and refreshes the published files in `docs/`. Review `git status` before committing.
 
-1. Open the repository on GitHub.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment**, select **GitHub Actions** as the source.
-4. Push to `main`, or run the workflow manually from the **Actions** tab.
-5. GitHub will build the Vite app and publish the `dist/` folder.
+Recommended release sequence:
 
-The Vite build uses relative asset paths so the interface can live under a normal GitHub Pages repository URL without hard-coded repository naming.
+1. Work on a feature/maintenance branch.
+2. Run `npm run build` and `npm run preview`.
+3. Check desktop and mobile layouts.
+4. Run `publish_docs.bat`.
+5. Review `git diff` / `git status`.
+6. Commit and push the branch.
+7. Merge to `main` only after approval.
 
-## Source map audit
+## Team handoff
 
-A source-map audit is included at `docs/SOURCE_MAP_AUDIT.md`. The raw R/Leaflet exports are intentionally not copied into the deployment repository because they are research-source files and may contain more interview detail than should be published by default. Keep the originals in controlled project storage.
+See:
 
-## Current production principle
+- `project-docs/TEAM_HANDOFF_AND_EMBED.md`
+- `project-docs/FINAL_QA_REPORT.md`
+- `project-docs/PRESENTATION_SCRIPT_8_MIN.md`
+- `project-docs/PRESENTATION_CUE_CARD.md`
 
-**Survey patterns show distribution. Narrated journeys show sequence. Neither should be made to claim what the other cannot establish.**
+The GitHub repository should remain the source of truth. The GEMMS website can embed or link to the deployed GitHub Pages atlas rather than maintaining a second copy of the application.

@@ -1,30 +1,8 @@
 import { useEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import { getFeatureBounds, wardColorExpression } from '../utils/geo.js';
-
-const baseMapStyle = {
-  version: 8,
-  sources: {
-    cartoLight: {
-      type: 'raster',
-      tiles: ['https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-    },
-  },
-  layers: [
-    {
-      id: 'carto-light-layer',
-      type: 'raster',
-      source: 'cartoLight',
-      paint: {
-        'raster-opacity': 0.82,
-        'raster-saturation': -0.55,
-        'raster-contrast': -0.08,
-      },
-    },
-  ],
-};
+import { MAP_STYLES, firstLabelLayerId } from '../config/mapStyle.js';
+import { escapeHtml, publicationResourceLabel } from '../utils/publicationLabels.js';
 
 const resourceColorExpression = [
   'match',
@@ -41,91 +19,66 @@ const resourceColorExpression = [
 ];
 
 function isMapUsable(map) {
-  try {
-    return Boolean(map && !map._removed && map.getStyle?.() && map.addLayer && map.addSource);
-  } catch {
-    return false;
-  }
+  try { return Boolean(map && !map._removed && map.getStyle?.() && map.addLayer && map.addSource); }
+  catch { return false; }
 }
-
-function hasLayer(map, id) {
-  try { return Boolean(isMapUsable(map) && map.getLayer(id)); } catch { return false; }
-}
-
-function hasSource(map, id) {
-  try { return Boolean(isMapUsable(map) && map.getSource(id)); } catch { return false; }
-}
-
+function hasLayer(map, id) { try { return Boolean(isMapUsable(map) && map.getLayer(id)); } catch { return false; } }
+function hasSource(map, id) { try { return Boolean(isMapUsable(map) && map.getSource(id)); } catch { return false; } }
 function safeAddSource(map, id, source) {
   if (!isMapUsable(map) || hasSource(map, id)) return;
   try { map.addSource(id, source); } catch (error) { console.warn(`Could not add source ${id}`, error); }
 }
-
-function safeAddLayer(map, layer) {
+function safeAddLayer(map, layer, beforeId) {
   if (!isMapUsable(map) || hasLayer(map, layer.id)) return;
-  try { map.addLayer(layer); } catch (error) { console.warn(`Could not add layer ${layer.id}`, error); }
-}
-
-function setSourceData(map, id, data) {
   try {
-    const source = map.getSource(id);
-    if (source?.setData) source.setData(data);
-  } catch {
-    // no-op
-  }
+    if (beforeId && hasLayer(map, beforeId)) map.addLayer(layer, beforeId);
+    else map.addLayer(layer);
+  } catch (error) { console.warn(`Could not add layer ${layer.id}`, error); }
 }
-
+function setSourceData(map, id, data) {
+  try { const source = map.getSource(id); if (source?.setData) source.setData(data); } catch {}
+}
 function combinedBounds(...geojsons) {
   const parts = geojsons.map(getFeatureBounds).filter(Boolean);
   if (!parts.length) return null;
   return parts.reduce((acc, b) => ({
-    minLng: Math.min(acc.minLng, b.minLng),
-    minLat: Math.min(acc.minLat, b.minLat),
-    maxLng: Math.max(acc.maxLng, b.maxLng),
-    maxLat: Math.max(acc.maxLat, b.maxLat),
+    minLng: Math.min(acc.minLng, b.minLng), minLat: Math.min(acc.minLat, b.minLat),
+    maxLng: Math.max(acc.maxLng, b.maxLng), maxLat: Math.max(acc.maxLat, b.maxLat),
   }));
 }
-
 function setSelectedResourceFilter(map, resourceId) {
-  if (!isMapUsable(map)) return;
-  try {
-    if (hasLayer(map, 'resources-selected-ring')) {
-      map.setFilter('resources-selected-ring', resourceId ? ['==', ['get', 'resource_id'], resourceId] : ['==', ['get', 'resource_id'], '']);
-    }
-  } catch {
-    // decorative only
-  }
+  if (!isMapUsable(map) || !hasLayer(map, 'resources-selected-ring')) return;
+  try { map.setFilter('resources-selected-ring', resourceId ? ['==', ['get', 'resource_id'], resourceId] : ['==', ['get', 'resource_id'], '']); } catch {}
 }
 
 function popupHtml(feature) {
   const p = feature.properties;
-  return `<div class="block-popup-card"><p class="block-popup-kicker">${p.resource_category_label}</p><strong>${p.resource_name}</strong><span>${p.mention_count} workshop mention${Number(p.mention_count) === 1 ? '' : 's'} · not independently verified</span></div>`;
+  return `<div class="block-popup-card"><p class="block-popup-kicker">${escapeHtml(p.resource_category_label)}</p><strong>${escapeHtml(publicationResourceLabel(p.resource_name))}</strong><span>${escapeHtml(p.mention_count)} workshop mention${Number(p.mention_count) === 1 ? '' : 's'} · participatory evidence</span></div>`;
 }
 
 function addOrUpdateLayers(map, wardsGeojson, blocksGeojson, resourcesGeojson, selectedResourceId) {
   if (!isMapUsable(map)) return false;
+  const labelLayer = firstLabelLayerId(map);
 
   safeAddSource(map, 'resources-wards', { type: 'geojson', data: wardsGeojson });
   setSourceData(map, 'resources-wards', wardsGeojson);
   safeAddLayer(map, {
     id: 'resources-wards-fill', type: 'fill', source: 'resources-wards',
-    paint: { 'fill-color': wardColorExpression(), 'fill-opacity': 0.055 },
-  });
+    paint: { 'fill-color': wardColorExpression(), 'fill-opacity': 0.045 },
+  }, labelLayer);
   safeAddLayer(map, {
     id: 'resources-wards-line', type: 'line', source: 'resources-wards',
-    paint: { 'line-color': wardColorExpression(), 'line-width': 1.6, 'line-opacity': 0.72 },
-  });
+    paint: { 'line-color': wardColorExpression(), 'line-width': 1.45, 'line-opacity': 0.6 },
+  }, labelLayer);
 
   safeAddSource(map, 'resources-blocks', { type: 'geojson', data: blocksGeojson });
   setSourceData(map, 'resources-blocks', blocksGeojson);
   safeAddLayer(map, {
     id: 'resources-blocks-context', type: 'circle', source: 'resources-blocks',
     paint: {
-      'circle-radius': ['interpolate', ['linear'], ['to-number', ['get', 'respondent_n']], 3, 3.8, 60, 7.2],
-      'circle-color': '#222622',
-      'circle-opacity': 0.34,
-      'circle-stroke-color': '#fffaf1',
-      'circle-stroke-width': 1,
+      'circle-radius': ['interpolate', ['linear'], ['to-number', ['get', 'respondent_n']], 3, 3.6, 60, 6.8],
+      'circle-color': '#222622', 'circle-opacity': 0.28,
+      'circle-stroke-color': '#fffaf1', 'circle-stroke-width': 0.9,
     },
   });
 
@@ -135,26 +88,21 @@ function addOrUpdateLayers(map, wardsGeojson, blocksGeojson, resourcesGeojson, s
     id: 'resources-glow', type: 'circle', source: 'resources',
     paint: {
       'circle-radius': ['interpolate', ['linear'], ['to-number', ['get', 'mention_count']], 1, 11, 8, 22],
-      'circle-color': resourceColorExpression,
-      'circle-opacity': 0.17,
-      'circle-blur': 0.6,
+      'circle-color': resourceColorExpression, 'circle-opacity': 0.14, 'circle-blur': 0.65,
     },
   });
   safeAddLayer(map, {
     id: 'resources-points', type: 'circle', source: 'resources',
     paint: {
-      'circle-radius': ['interpolate', ['linear'], ['to-number', ['get', 'mention_count']], 1, 5.5, 8, 10],
+      'circle-radius': ['interpolate', ['linear'], ['to-number', ['get', 'mention_count']], 1, 5.3, 8, 9.6],
       'circle-color': resourceColorExpression,
-      'circle-stroke-color': '#111816',
-      'circle-stroke-width': 1.6,
-      'circle-opacity': 0.96,
+      'circle-stroke-color': '#111816', 'circle-stroke-width': 1.45, 'circle-opacity': 0.95,
     },
   });
   safeAddLayer(map, {
     id: 'resources-selected-ring', type: 'circle', source: 'resources', filter: ['==', ['get', 'resource_id'], ''],
     paint: { 'circle-radius': 15, 'circle-color': 'rgba(255,255,255,0)', 'circle-stroke-color': '#fffaf1', 'circle-stroke-width': 3.2 },
   });
-
   setSelectedResourceFilter(map, selectedResourceId);
   return true;
 }
@@ -176,18 +124,15 @@ export default function ResourcesMap({ wardsGeojson, blocksGeojson, resourcesGeo
 
     const bindInteraction = (map) => {
       if (!isMapUsable(map) || interactionBoundRef.current || !hasLayer(map, 'resources-points')) return;
-      const handleClick = (event) => {
+      map.on('click', 'resources-points', (event) => {
         const feature = event.features?.[0];
         if (!feature) return;
         onSelectRef.current?.(feature);
         setSelectedResourceFilter(map, feature.properties.resource_id);
         popupRef.current?.remove();
         popupRef.current = new maplibregl.Popup({ closeButton: false, closeOnClick: true, offset: 16, className: 'custom-block-popup' })
-          .setLngLat(event.lngLat)
-          .setHTML(popupHtml(feature))
-          .addTo(map);
-      };
-      map.on('click', 'resources-points', handleClick);
+          .setLngLat(event.lngLat).setHTML(popupHtml(feature)).addTo(map);
+      });
       const pointerOn = () => { try { map.getCanvas().style.cursor = 'pointer'; } catch {} };
       const pointerOff = () => { try { map.getCanvas().style.cursor = ''; } catch {} };
       map.on('mouseenter', 'resources-points', pointerOn);
@@ -207,25 +152,19 @@ export default function ResourcesMap({ wardsGeojson, blocksGeojson, resourcesGeo
 
     const renderData = (map) => {
       if (!isMapUsable(map)) return;
-      const added = addOrUpdateLayers(map, wardsGeojson, blocksGeojson, resourcesGeojson, selectedResourceId);
-      if (!added) return;
+      if (!addOrUpdateLayers(map, wardsGeojson, blocksGeojson, resourcesGeojson, selectedResourceId)) return;
       bindInteraction(map);
       fitMap(map);
     };
 
     if (!mapRef.current) {
       const map = new maplibregl.Map({
-        container: containerRef.current,
-        style: baseMapStyle,
-        center: [30.035, -22.34],
-        zoom: 11.2,
-        minZoom: 8,
-        maxZoom: 17,
-        attributionControl: false,
+        container: containerRef.current, style: MAP_STYLES.local,
+        center: [30.035, -22.34], zoom: 11.2, minZoom: 8, maxZoom: 17, attributionControl: false,
       });
       mapRef.current = map;
       try {
-        map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+        map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
         map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
       } catch {}
       map.once('load', () => renderData(map));
@@ -234,26 +173,23 @@ export default function ResourcesMap({ wardsGeojson, blocksGeojson, resourcesGeo
       if (isMapUsable(map) && map.isStyleLoaded()) renderData(map);
       else if (map && !map._removed) map.once('load', () => renderData(map));
     }
-
     return undefined;
   }, [wardsGeojson, blocksGeojson, resourcesGeojson, selectedResourceId]);
 
   useEffect(() => () => {
-    popupRef.current?.remove();
-    popupRef.current = null;
-    interactionBoundRef.current = false;
-    hasFitBoundsRef.current = false;
+    popupRef.current?.remove(); popupRef.current = null;
+    interactionBoundRef.current = false; hasFitBoundsRef.current = false;
     try { mapRef.current?.remove(); } catch {}
     mapRef.current = null;
   }, []);
 
   return (
-    <div className="map-frame resources-map-frame">
+    <div className="map-frame resources-map-frame survey-map-frame">
       <div className="map-container" ref={containerRef} />
       <div className="map-overlay-title">
         <p className="map-kicker">Participatory resources</p>
-        <h3>Places named in workshop maps</h3>
-        <p>Workshop-identified resources layered with survey blocks and official ward outlines.</p>
+        <h3>The mappable part of a wider resource ecology</h3>
+        <p>Places named in workshop mapping, layered with survey blocks and official ward outlines.</p>
       </div>
       <div className="map-legend resources-legend" aria-label="Participatory resource legend">
         <p className="legend-heading">Resource categories</p>

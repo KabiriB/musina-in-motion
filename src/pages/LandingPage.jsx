@@ -1,28 +1,23 @@
 import { ArrowRight, BookOpenText, MapPinned, ShieldCheck } from 'lucide-react';
 import Header from '../components/Header.jsx';
+import { siteCopy } from '../content/siteCopy.js';
 
 export default function LandingPage() {
+  const copy = siteCopy.landing;
+
   return (
     <div className="app-shell">
       <Header mode="home" />
       <main className="main-content landing-main">
         <section className="landing-hero">
           <div className="landing-hero-copy">
-            <p className="eyebrow">GEMMS · Musina field atlas</p>
-            <h1>One town. Two ways of reading movement.</h1>
-            <p className="landing-lede">
-              The survey interface shows patterns across Musina. Narrated Journeys follows selected
-              interview routes as lived sequences of origin, stop points, border crossing, delay,
-              work, risk, waiting, settlement, and adaptation.
-            </p>
+            <p className="eyebrow">{copy.eyebrow}</p>
+            <h1>{copy.title}</h1>
+            <p className="landing-lede">{copy.lede}</p>
           </div>
           <aside className="landing-principle-card">
             <ShieldCheck size={22} />
-            <p>
-              The two views are intentionally distinct. Aggregate survey patterns are not used to
-              claim individual experience, and interview journeys are not presented as statistically
-              representative.
-            </p>
+            <p>{copy.principle}</p>
           </aside>
         </section>
 
@@ -30,12 +25,9 @@ export default function LandingPage() {
           <a className="landing-choice-card landing-choice-card--survey" href="./survey.html">
             <div className="landing-choice-icon"><MapPinned size={30} /></div>
             <div>
-              <p className="choice-kicker">Quantitative spatial view</p>
-              <h2>Explore Survey Interface</h2>
-              <p>
-                Read regional mobility connections, ward and block patterns, infrastructure,
-                participatory resources, and ward ecology from the QA-checked survey data spine.
-              </p>
+              <p className="choice-kicker">{copy.surveyKicker}</p>
+              <h2>{copy.surveyTitle}</h2>
+              <p>{copy.surveyDescription}</p>
             </div>
             <span className="choice-action">Open survey atlas <ArrowRight size={18} /></span>
           </a>
@@ -43,32 +35,23 @@ export default function LandingPage() {
           <a className="landing-choice-card landing-choice-card--journeys" href="./journeys.html">
             <div className="landing-choice-icon"><BookOpenText size={30} /></div>
             <div>
-              <p className="choice-kicker">Qualitative route reader</p>
-              <h2>Read Narrated Journeys</h2>
-              <p>
-                Move through selected interview routes stop by stop. One journey currently contains
-                a fuller narrative; the remaining published routes are clearly marked as sketches.
-              </p>
+              <p className="choice-kicker">{copy.journeysKicker}</p>
+              <h2>{copy.journeysTitle}</h2>
+              <p>{copy.journeysDescription}</p>
             </div>
-            <span className="choice-action">Open journey reader <ArrowRight size={18} /></span>
+            <span className="choice-action">Open journey atlas <ArrowRight size={18} /></span>
           </a>
         </section>
 
         <section className="landing-context-grid">
           <article>
             <p className="section-kicker">Why two views?</p>
-            <h2>Pattern and sequence answer different questions.</h2>
+            <h2>{copy.contextTitle}</h2>
           </article>
-          <article>
-            <p>
-              The survey can show where patterns cluster and how conditions vary across the study
-              geography. The interviews can show how movement unfolds through time and place. Keeping
-              them connected but analytically distinct makes the interface more honest and more useful.
-            </p>
-          </article>
+          <article><p>{copy.contextBody}</p></article>
         </section>
       </main>
-      <footer className="footer">Musina in Motion · research interface · team review build.</footer>
+      <footer className="footer">{copy.footer}</footer>
     </div>
   );
 }
