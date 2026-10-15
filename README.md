@@ -12,6 +12,7 @@ The atlas is designed to make spatial structure visible without turning a resear
 - `index.html` — landing page
 - `survey.html` — Survey Atlas
 - `journeys.html` — Narrated Journeys
+- `acknowledgements.html` — GEMMS research, leadership and funding acknowledgement
 
 ## Core production principle
 
@@ -102,11 +103,12 @@ npm run build
 npm run preview
 ```
 
-Test all three pages:
+Test all four pages:
 
 - `/`
 - `/survey.html`
 - `/journeys.html`
+- `/acknowledgements.html`
 
 ## GitHub Pages deployment
 
@@ -136,7 +138,5 @@ See:
 
 - `project-docs/TEAM_HANDOFF_AND_EMBED.md`
 - `project-docs/FINAL_QA_REPORT.md`
-- `project-docs/PRESENTATION_SCRIPT_8_MIN.md`
-- `project-docs/PRESENTATION_CUE_CARD.md`
 
 The GitHub repository should remain the source of truth. The GEMMS website can embed or link to the deployed GitHub Pages atlas rather than maintaining a second copy of the application.

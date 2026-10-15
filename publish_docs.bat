@@ -7,7 +7,7 @@ if not exist "package.json" (
 )
 
 for /f "delims=" %%B in ('git branch --show-current') do set "BRANCH=%%B"
-if /I not "%BRANCH%"=="final-polish-v2" if /I not "%BRANCH%"=="main" (
+if /I not "%BRANCH%"=="final-polish-v2" if /I not "%BRANCH%"=="main" if /I not "%BRANCH%"=="gemms-acknowledgements-review" (
   echo ERROR: Current branch is "%BRANCH%".
   echo Publish only from final-polish-v2 during review or main after merge.
   exit /b 1
@@ -23,6 +23,7 @@ if exist "docs\data" rmdir /S /Q "docs\data"
 if exist "docs\index.html" del /Q "docs\index.html"
 if exist "docs\survey.html" del /Q "docs\survey.html"
 if exist "docs\journeys.html" del /Q "docs\journeys.html"
+if exist "docs\acknowledgements.html" del /Q "docs\acknowledgements.html"
 if exist "docs\SOURCE_MAP_AUDIT.md" del /Q "docs\SOURCE_MAP_AUDIT.md"
 
 xcopy /E /I /Y "dist\*" "docs\" >nul

@@ -1,3 +1,6 @@
+/* Official GEMMS emblem replaces the decorative brand square. */
+.brand-mark--gemms { border-radius: 50%; object-fit: contain; background: #ffffff; box-shadow: none; flex: 0 0 38px; }
+
 .brand-lockup--link {
   color: inherit;
   text-decoration: none;
