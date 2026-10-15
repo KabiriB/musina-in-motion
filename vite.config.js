@@ -11,6 +11,7 @@ export default defineConfig({
         home: fileURLToPath(new URL('./index.html', import.meta.url)),
         survey: fileURLToPath(new URL('./survey.html', import.meta.url)),
         journeys: fileURLToPath(new URL('./journeys.html', import.meta.url)),
+        acknowledgements: fileURLToPath(new URL('./acknowledgements.html', import.meta.url)),
       },
     },
   },

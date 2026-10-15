@@ -13,7 +13,7 @@ export default function Header({ mode = 'survey' }) {
     <header className="site-header">
       <div className="header-inner header-inner--primary">
         <a className="brand-lockup brand-lockup--link" href="./" aria-label="Musina in Motion home">
-          <div className="brand-mark" aria-hidden="true" />
+          <img className="brand-mark brand-mark--gemms" src="./brand/gemms-emblem.png" alt="" aria-hidden="true" />
           <div>
             <p className="brand-title">Musina in Motion</p>
             <p className="brand-subtitle">Survey atlas + narrated journeys</p>
@@ -23,6 +23,7 @@ export default function Header({ mode = 'survey' }) {
           <a className="nav-link" href="./">Home</a>
           <a className={`nav-link ${mode === 'survey' ? 'nav-link--active' : ''}`} href="./survey.html">Survey atlas</a>
           <a className={`nav-link ${mode === 'journeys' ? 'nav-link--active' : ''}`} href="./journeys.html">Narrated journeys</a>
+          <a className={`nav-link ${mode === 'acknowledgements' ? 'nav-link--active' : ''}`} href="./acknowledgements.html">Acknowledgements</a>
         </nav>
       </div>
       {mode === 'survey' && (
