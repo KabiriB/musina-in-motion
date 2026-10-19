@@ -35,7 +35,7 @@ function ResourcePanel({ selectedResource }) {
         <span className="source-pill">Participatory evidence</span>
       </div>
       <h3>{publicationResourceLabel(p.resource_name)}</h3>
-      <p className="resources-panel-copy">This place was named in workshop mapping as a locally meaningful resource. Its presence on the map records that local knowledge; it does not convert the point into a verified service record.</p>
+      <p className="resources-panel-copy">This resource was identified by participants during the resource-mapping workshops.</p>
       <div className="detail-list compact">
         <div className="detail-row quiet"><span className="detail-label">Workshop mentions</span><span className="detail-value">{p.mention_count}</span></div>
         <div className="detail-row quiet"><span className="detail-label">Named by</span><span className="detail-value">{publicationGroupLabel(p.mentioned_by_groups)}</span></div>

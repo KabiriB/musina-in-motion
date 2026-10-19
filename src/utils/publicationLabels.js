@@ -5,6 +5,7 @@ const EXACT_RESOURCE_LABELS = new Map([
   ['musina clinic (nancefield clinic)', 'Musina Clinic (Nancefield Clinic)'],
   ['iom', 'IOM'],
   ['tvet college', 'TVET College'],
+  ['legal adviec office', 'Legal Advice Office'],
 ]);
 
 const ACRONYMS = new Map([
